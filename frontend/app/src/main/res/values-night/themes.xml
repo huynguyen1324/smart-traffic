@@ -7,6 +7,5 @@
     </style>
 
     <style name="Theme.SmartTraffic" parent="Base.Theme.SmartTraffic">
-        <item name="android:windowAnimationStyle">@style/SlideAnimation</item>
     </style>
 </resources>
