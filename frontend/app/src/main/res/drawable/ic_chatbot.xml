@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Thân chatbot (hình tròn bo tròn) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12C2,14.05 2.64,15.95 3.73,17.5L2.29,21.71C2.1,22.24 2.63,22.77 3.16,22.58L7.5,21.27C8.95,22.19 10.66,22.73 12.5,22.73C17.75,22.73 22,18.48 22,13.23C22,7.98 17.75,3.73 12.5,3.73C12.34,3.73 12.17,3.74 12,3.74L12,2Z" />
+    <path
+        android:fillColor="#000000"
+        android:pathData="M20,12C20,16.42 16.42,20 12,20C10.39,20 8.89,19.52 7.64,18.69L7.17,18.38L4.5,19.5L5.62,16.86L5.3,16.38C4.49,15.14 4,13.63 4,12C4,7.58 7.58,4 12,4C16.42,4 20,7.58 20,12Z" />
+    <!-- Mắt trái chatbot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M9,11C9.55,11 10,10.55 10,10C10,9.45 9.55,9 9,9C8.45,9 8,9.45 8,10C8,10.55 8.45,11 9,11Z" />
+    <!-- Mắt phải chatbot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15,11C15.55,11 16,10.55 16,10C16,9.45 15.55,9 15,9C14.45,9 14,9.45 14,10C14,10.55 14.45,11 15,11Z" />
+    <!-- Miệng chatbot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15.5,14.5C14.65,15.35 13.38,15.5 12,15.5C10.62,15.5 9.35,15.35 8.5,14.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round" />
+</vector>
