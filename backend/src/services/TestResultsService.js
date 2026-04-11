@@ -9,6 +9,10 @@ class TestResultsService {
         return await testResultsRepository.findById(id);
     }
 
+    async getByUserId(userId) {
+        return await testResultsRepository.findByUserId(userId);
+    }
+
     async create(data) {
         return await testResultsRepository.save(data);
     }

@@ -44,31 +44,6 @@
         android:gravity="center"
         android:layout_marginTop="10dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="22dp">
-
-        <View
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:background="@drawable/bg_dot_inactive" />
-
-        <View
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_dot_inactive" />
-
-        <View
-            android:layout_width="28dp"
-            android:layout_height="10dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_dot_active" />
-    </LinearLayout>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStart"
         android:layout_width="match_parent"
@@ -83,3 +58,5 @@
         app:cornerRadius="30dp" />
 
 </LinearLayout>
+
+

@@ -14,6 +14,7 @@ const signsRoutes = require('./routes/SignsRoutes');
 const testResultDetailRoutes = require('./routes/TestResultDetailRoutes');
 const testResultsRoutes = require('./routes/TestResultsRoutes');
 const usersRoutes = require('./routes/UsersRoutes');
+const userStreaksRoutes = require('./routes/UserStreaksRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/test-result-detail', testResultDetailRoutes);
 app.use('/api/test-results', testResultsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/quizzes', quizRoutes);
+app.use('/api/streaks', userStreaksRoutes);
 
 app.get('/', (req, res) => res.json({ message: 'Smart Traffic API - Spring Boot Architecture' }));
 

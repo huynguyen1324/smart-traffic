@@ -36,28 +36,26 @@
         <activity android:name=".ui.lesson.LawCategoryActivity"/>
         <activity android:name=".ui.lesson.LawDetailActivity"/>
         <activity android:name=".ui.sign.SignListActivity"/>
-        <activity android:name=".ui.sign.SignCategoryActivity"/>
         <activity android:name=".ui.sign.SignDetailActivity"/>
-        <activity android:name=".ui.quiz.SignQuizActivity"/>
+        
         <activity android:name=".ui.simulation.SimulationListActivity"/>
         <activity android:name=".ui.simulation.SimulationDetailActivity"/>
         <activity android:name=".ui.simulation.SimulationResultActivity" />
+        
         <activity android:name=".ui.quiz.QuizPracticeActivity" />
-        <activity android:name=".ui.quiz.ExamSelectionActivity" />
         <activity android:name=".ui.quiz.QuizCategoryActivity" />
+        <activity android:name=".ui.quiz.QuizCategoryListActivity" />
         <activity android:name=".ui.quiz.QuizActivity" />
-        <activity android:name=".ui.quiz.QuizResultActivity"/>
+        
+        <activity android:name=".ui.test.TestListActivity" />
+        <activity android:name=".ui.test.TestActivity" />
+        <activity android:name=".ui.test.TestResultActivity" />
+
         <activity android:name=".ui.search.SearchActivity" />
-        <activity android:name=".ui.favorite.FavoriteActivity"/>
         <activity android:name=".ui.assistant.AssistantActivity"/>
         <activity android:name=".ui.map.MapActivity" />
         <activity android:name=".ui.profile.ProfileActivity"/>
         <activity android:name=".ui.progress.ProgressActivity"/>
-        <activity android:name=".ui.settings.SettingActivity" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
 
     </application>
 

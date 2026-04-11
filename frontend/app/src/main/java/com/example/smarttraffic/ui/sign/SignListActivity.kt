@@ -24,7 +24,6 @@ import com.example.smarttraffic.network.SignApiService
 import com.example.smarttraffic.ui.adapter.SignAdapter
 import com.example.smarttraffic.ui.home.HomeActivity
 import com.example.smarttraffic.ui.profile.ProfileActivity
-import com.example.smarttraffic.ui.quiz.ExamSelectionActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,13 +63,17 @@ class SignListActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Navigation
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
-        setupBottomNav()
-
         // Load data
         loadCategories()
         loadAllSigns()
+
+        // Navigation
+        findViewById<View>(R.id.btnBack).setOnClickListener {
+            com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
+        }
+
+        // --- BOTTOM NAVIGATION ---
+        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navSign)
     }
 
     private fun loadCategories() {
@@ -153,9 +156,5 @@ class SignListActivity : AppCompatActivity() {
                 }
             }
         signAdapter.updateData(filteredSigns)
-    }
-
-    private fun setupBottomNav() {
-        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navSign)
     }
 }

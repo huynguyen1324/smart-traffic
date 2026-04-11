@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_assistant_circle"
+        android:backgroundTint="#F1F5F9"
+        android:gravity="center"
+        android:text="📝"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTestTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đề số 1"
+            android:textColor="#0F172A"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTestDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11/04/2026"
+            android:textColor="#64748B"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTestScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25/25"
+        android:textColor="#22C1E8"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

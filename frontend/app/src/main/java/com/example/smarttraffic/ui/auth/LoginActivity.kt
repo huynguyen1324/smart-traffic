@@ -50,10 +50,11 @@ class LoginActivity : AppCompatActivity() {
                                 (it.email == email || it.phone == email) && it.password == password
                             }
                             if (matchedUser != null) {
-                                getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
-                                    .putInt("USER_ID", matchedUser.id ?: -1)
-                                    .putString("USER_NAME", matchedUser.full_name ?: "")
-                                    .apply()
+                                com.example.smarttraffic.util.SessionManager(this@LoginActivity).saveLogin(
+                                    matchedUser.id ?: -1,
+                                    matchedUser.full_name ?: "",
+                                    matchedUser.learning_goal ?: "B2"
+                                )
                                 Toast.makeText(this@LoginActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                                 finish()

@@ -26,7 +26,6 @@ object NavigationHelper {
                 val intent = Intent(activity, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 activity.startActivity(intent)
-                activity.finish()
             }
         }
 
@@ -35,7 +34,6 @@ object NavigationHelper {
                 val intent = Intent(activity, LawListActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 activity.startActivity(intent)
-                activity.finish()
             }
         }
 
@@ -44,7 +42,6 @@ object NavigationHelper {
                 val intent = Intent(activity, SignListActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 activity.startActivity(intent)
-                activity.finish()
             }
         }
 
@@ -53,7 +50,6 @@ object NavigationHelper {
                 val intent = Intent(activity, SimulationListActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 activity.startActivity(intent)
-                activity.finish()
             }
         }
 
@@ -62,7 +58,6 @@ object NavigationHelper {
                 val intent = Intent(activity, ProfileActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 activity.startActivity(intent)
-                activity.finish()
             }
         }
 
@@ -83,5 +78,14 @@ object NavigationHelper {
             it.setTextColor(color)
             it.typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
+    }
+
+    fun navigateTo(activity: Activity, destination: Class<*>, clearTop: Boolean = false) {
+        val intent = Intent(activity, destination)
+        if (clearTop) {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        activity.startActivity(intent)
+        if (clearTop) activity.finish()
     }
 }

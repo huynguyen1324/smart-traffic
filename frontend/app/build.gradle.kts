@@ -47,6 +47,7 @@ android {
                 "src/main/res-layouts/sign",
                 "src/main/res-layouts/law",
                 "src/main/res-layouts/home",
+                "src/main/res-layouts/test",
                 "src/main/res-layouts/misc"
             )
         }

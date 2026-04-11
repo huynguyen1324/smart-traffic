@@ -16,6 +16,13 @@ class TestResultsController {
         } catch (err) { res.status(500).json({ error: err.message }); }
     }
 
+    async getByUserId(req, res) {
+        try {
+            const data = await testResultsService.getByUserId(req.params.user_id);
+            res.json(data);
+        } catch (err) { res.status(500).json({ error: err.message }); }
+    }
+
     async create(req, res) {
         try {
             const id = await testResultsService.create(req.body);

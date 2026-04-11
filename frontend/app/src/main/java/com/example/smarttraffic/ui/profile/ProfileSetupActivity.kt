@@ -82,7 +82,10 @@ class ProfileSetupActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         Toast.makeText(this@ProfileSetupActivity, "Hồ sơ đã được lưu thành công!", Toast.LENGTH_SHORT).show()
                         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-                        sharedPref.edit().putString("USER_NAME", updatedName).apply()
+                        sharedPref.edit()
+                            .putString("USER_NAME", updatedName)
+                            .putString("LEARNING_GOAL", learningGoal)
+                            .apply()
                         
                         startActivity(Intent(this@ProfileSetupActivity, HomeActivity::class.java))
                         finish()

@@ -29,7 +29,9 @@ class QuizPracticeActivity : AppCompatActivity() {
         }
 
         // 3. Điều hướng
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<View>(R.id.btnBack).setOnClickListener {
+            com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
+        }
         com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, -1)
     }
 }

@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@drawable/bg_main_gradient">
 
     <!-- Header -->
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="#FFFFFF"
-        android:elevation="2dp"
         android:paddingHorizontal="16dp">
         <ImageView
             android:id="@+id/btnBack"
@@ -19,15 +17,15 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:padding="8dp"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="#0F172A" />
+            android:src="@drawable/ic_back"
+            app:tint="@color/text_main" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-black"
-            android:text="Kết quả luyện tập"
-            android:textColor="#0F172A"
+            android:text="Kết quả thi sát hạch"
+            android:textColor="@color/text_main"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -43,7 +41,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="24dp">
 
             <!-- Score Visual -->
             <com.google.android.material.card.MaterialCardView
@@ -51,14 +49,15 @@
                 android:layout_height="220dp"
                 android:layout_marginTop="24dp"
                 app:cardBackgroundColor="@android:color/transparent"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="40dp"
-                app:strokeWidth="0dp">
+                app:cardElevation="0dp"
+                app:cardCornerRadius="110dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="#E2E8F0">
                 <RelativeLayout
                     android:id="@+id/layoutScoreResult"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_score_card"
+                    android:background="@color/white"
                     android:padding="24dp">
                     
                     <LinearLayout
@@ -73,8 +72,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-black"
-                            android:text="28/28"
-                            android:textColor="#FFFFFF"
+                            android:text="21/25"
+                            android:textColor="@color/primary"
                             android:textSize="48sp" />
                         
                         <TextView
@@ -82,9 +81,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="ĐẠT YÊU CẦU"
-                            android:textColor="#E2E8F0"
-                            android:textSize="14sp"
+                            android:text="ĐẠT"
+                            android:textColor="@color/primary"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:letterSpacing="0.1" />
                     </LinearLayout>
@@ -92,39 +91,40 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tvCongratulation"
+                android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-black"
-                android:text="Tuyệt vời! Bạn đã hoàn thành"
-                android:textColor="#0F172A"
+                android:text="Chúc mừng bạn đã thi đỗ!"
+                android:textColor="@color/text_main"
                 android:textSize="22sp" />
 
-            <!-- Detailed Stats Grid -->
-            <GridLayout
+            <!-- Detailed Stats Row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:columnCount="2"
-                android:useDefaultMargins="true">
+                android:orientation="horizontal">
 
                 <!-- Correct Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8F0">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="12dp"
                         android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Câu đúng" android:textColor="#64748B" android:textSize="12sp"/>
-                        <TextView android:id="@+id/tvCorrectCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="28" android:textColor="#16A34A" android:textStyle="bold" android:textSize="24sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Câu đúng" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+                        <TextView android:id="@+id/tvCorrectCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="0" android:textColor="#16A34A" android:textStyle="bold" android:textSize="20sp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -132,30 +132,55 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="3dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8F0">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="12dp"
                         android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Câu sai" android:textColor="#64748B" android:textSize="12sp"/>
-                        <TextView android:id="@+id/tvWrongCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="0" android:textColor="#EF4444" android:textStyle="bold" android:textSize="24sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Câu sai" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+                        <TextView android:id="@+id/tvWrongCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="0" android:textColor="#EF4444" android:textStyle="bold" android:textSize="20sp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </GridLayout>
 
-            <!-- Additional Content Section -->
+                <!-- Unanswered Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8F0">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chưa làm" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+                        <TextView android:id="@+id/tvUnansweredCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="0" android:textColor="#6B7280" android:textStyle="bold" android:textSize="20sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Advice Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#F1F5F9">
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="1dp"
+                app:strokeColor="#E2E8F0">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -165,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lời khuyên"
-                        android:textColor="#334155"
+                        android:textColor="@color/text_main"
                         android:textStyle="bold"
                         android:textSize="16sp" />
                     <TextView
@@ -173,49 +198,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Kết quả này rất tốt! Hãy tiếp tục duy trì phong độ để sẵn sàng cho kỳ thi thật nhé."
-                        android:textColor="#64748B"
+                        android:text="Đang phân tích kết quả..."
+                        android:textColor="@color/text_secondary"
                         android:lineSpacingExtra="2dp"
                         android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginBottom="24dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRetryQuiz"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="Luyện lại"
-                    android:textAllCaps="false"
-                    android:textColor="#22C1E8"
-                    android:textStyle="bold"
-                    app:cornerRadius="30dp"
-                    app:strokeColor="#22C1E8"
-                    app:strokeWidth="2dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnBackTheory"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:text="Học lại lý thuyết"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    app:backgroundTint="#22C1E8"
-                    app:cornerRadius="30dp"
-                    app:elevation="4dp" />
-            </LinearLayout>
+                android:text="Quay về trang chủ"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="16dp"
+                app:elevation="0dp" />
 
         </LinearLayout>
     </ScrollView>

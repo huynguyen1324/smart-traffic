@@ -39,7 +39,7 @@ class ProfileActivity : AppCompatActivity() {
 
         // 1. Nút Back
         findViewById<View>(R.id.btnBack)?.setOnClickListener {
-            finish()
+            com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
 
         // 2. Các mục menu
@@ -51,11 +51,11 @@ class ProfileActivity : AppCompatActivity() {
             showLogoutDialog()
         }
 
-        // 3. Bottom Navigation Bar
-        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navProfile)
-
         // Load Dữ liệu Người Dùng
         loadUserProfile()
+
+        // --- BOTTOM NAVIGATION ---
+        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navProfile)
     }
 
     private fun loadUserProfile() {

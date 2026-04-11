@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:padding="12dp"
-            android:src="@android:drawable/ic_menu_revert"
+            android:src="@drawable/ic_back"
             app:tint="#0F172A"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
@@ -53,20 +53,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng quan kết quả"
+                android:text="Tiến độ học tập"
                 android:textColor="#0F172A"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Theo dõi tiến trình luyện tập của bạn"
-                android:textColor="#64748B"
-                android:textSize="15sp" />
-
-            <!-- Card 1: Câu hỏi đã làm -->
+            <!-- Grouped Quiz Stats Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,6 +75,7 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
+                    <!-- Section 1: Questions Done -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,8 +89,7 @@
                             android:backgroundTint="#E0F2FE"
                             android:gravity="center"
                             android:text="📋"
-                            android:textSize="18sp"
-                            android:contentDescription="Icon" />
+                            android:textSize="18sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -107,13 +99,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Câu hỏi đã làm"
+                                android:text="Câu hỏi đã luyện tập"
                                 android:textColor="#64748B"
                                 android:textSize="13sp" />
                             <TextView
+                                android:id="@+id/tvQuestionsDone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="150 / 600"
+                                android:text="0 / 600"
                                 android:textColor="#0F172A"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -121,21 +114,110 @@
                     </LinearLayout>
 
                     <ProgressBar
+                        android:id="@+id/progressBarQuestions"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="20dp"
-                        android:progress="25"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="20dp"
+                        android:progress="0"
                         android:progressTint="#22C1E8"
                         android:progressBackgroundTint="#F1F5F9" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F1F5F9"
+                        android:layout_marginBottom="20dp"/>
+
+                    <!-- Section 2: Accuracy and Correct/Wrong counts -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tỷ lệ chính xác"
+                                android:textColor="#64748B"
+                                android:textSize="13sp" />
+                            <TextView
+                                android:id="@+id/tvAccuracyPercent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textColor="#0F172A"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="end">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <View
+                                    android:layout_width="8dp"
+                                    android:layout_height="8dp"
+                                    android:background="#10B981"
+                                    android:layout_marginEnd="8dp"/>
+                                <TextView
+                                    android:id="@+id/tvCorrectCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0 đúng"
+                                    android:textColor="#10B981"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <View
+                                    android:layout_width="8dp"
+                                    android:layout_height="8dp"
+                                    android:background="#EF4444"
+                                    android:layout_marginEnd="8dp"/>
+                                <TextView
+                                    android:id="@+id/tvWrongCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0 sai"
+                                    android:textColor="#EF4444"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 2: Tỷ lệ chính xác -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Kết quả thi gần đây"
+                android:textColor="#0F172A"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
@@ -143,51 +225,32 @@
                 app:strokeWidth="1dp">
 
                 <LinearLayout
+                    android:id="@+id/layoutRecentTests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_assistant_circle"
-                        android:backgroundTint="#DCFCE7"
+                        android:id="@+id/tvNoTestData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="Chưa có dữ liệu bài thi"
                         android:gravity="center"
-                        android:text="✅"
-                        android:textSize="18sp"
-                        android:contentDescription="Icon" />
+                        android:textColor="#94A3B8" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tỷ lệ chính xác"
-                            android:textColor="#64748B"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="85%"
-                            android:textColor="#0F172A"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+2.5%"
-                        android:textColor="#16A34A"
-                        android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Chuỗi học tập"
+                android:textColor="#0F172A"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <!-- Card 3: Chuỗi học tập -->
             <com.google.android.material.card.MaterialCardView
@@ -203,38 +266,92 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="20dp">
 
-                    <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_assistant_circle"
-                        android:backgroundTint="#FEF3C7"
-                        android:gravity="center"
-                        android:text="🔥"
-                        android:textSize="18sp"
-                        android:contentDescription="Icon" />
-
+                    <!-- Hàng 1: Chuỗi hiện tại -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_assistant_circle"
+                            android:backgroundTint="#FFF7ED"
+                            android:gravity="center"
+                            android:text="🎯"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Chuỗi học tập"
-                            android:textColor="#64748B"
-                            android:textSize="13sp" />
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Chuỗi hiện tại"
+                                android:textColor="#64748B"
+                                android:textSize="13sp" />
+                            <TextView
+                                android:id="@+id/tvStreakCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 ngày"
+                                android:textColor="#0F172A"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F1F5F9"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Hàng 2: Kỷ lục (Lửa tím) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_assistant_circle"
+                            android:backgroundTint="#F5F3FF"
+                            android:gravity="center"
+                            android:text="🔥"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="7 ngày"
-                            android:textColor="#0F172A"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kỷ lục dài nhất"
+                                android:textColor="#64748B"
+                                android:textSize="13sp" />
+                            <TextView
+                                android:id="@+id/tvLongestStreak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 ngày"
+                                android:textColor="#0F172A"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -257,16 +374,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lời khuyên hôm nay"
+                        android:text="Lời khuyên"
                         android:textColor="#0369A1"
                         android:textStyle="bold"
                         android:textSize="16sp" />
                     <TextView
+                        android:id="@+id/tvTodayAdvice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:lineSpacingExtra="4dp"
-                        android:text="Bạn thường mắc lỗi ở phần biển báo cấm. Hãy dành thêm thời gian ôn tập phần này nhé!"
+                        android:text="Đang phân tích tiến rộ để đưa ra lời khuyên..."
                         android:textColor="#0C4A6E"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -276,3 +394,5 @@
     </ScrollView>
 
 </RelativeLayout>
+
+

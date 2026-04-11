@@ -11,6 +11,10 @@ class SimulationListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simulation_list)
 
+        findViewById<android.view.View>(R.id.btnBack)?.setOnClickListener {
+            com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
+        }
+
         findViewById<LinearLayout>(R.id.itemTrafficLight).setOnClickListener {
             startActivity(Intent(this, SimulationDetailActivity::class.java))
         }

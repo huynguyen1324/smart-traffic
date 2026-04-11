@@ -15,10 +15,10 @@ const getTestList = async (req, res) => {
 
 const getQuestionsByTest = async (req, res) => {
   try {
-    const { license, testNumber } = req.params;
+    const { license, test_id } = req.params;
     const data = await quizService.getQuestionsByTest(
       license,
-      testNumber
+      test_id
     );
     res.json(data);
   } catch (error) {
@@ -51,18 +51,11 @@ const getQuestionsByType = async (req, res) => {
 
 const getQuestionsByTypeAndCategory = async (req, res) => {
   try {
-    const { license, type, categoryId } = req.params;
-    
-    // Xử lý lỗi lệch ID giữa bảng law_categories (11, 12...) và questions (1, 2...)
-    let mappedCategoryId = parseInt(categoryId, 10);
-    if (type === "Law" && mappedCategoryId > 10) {
-      mappedCategoryId -= 10;
-    }
-
+    const { license, type, category_id } = req.params;
     const data = await quizService.getQuestionsByTypeAndCategory(
       license,
       type,
-      mappedCategoryId
+      category_id
     );
     res.json(data);
   } catch (error) {
@@ -106,6 +99,36 @@ const submitQuizResult = async (req, res) => {
   }
 };
 
+const saveQuizDetail = async (req, res) => {
+  try {
+    const { user_id, license, question_id, chosen_option, correct } = req.body;
+    const result = await quizService.saveQuizDetail(user_id, license, question_id, chosen_option, correct);
+    res.json({ message: "Detail saved", result });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getQuizStats = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const data = await quizService.getQuizStats(user_id);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getQuizDetails = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const data = await quizService.getQuizDetails(user_id);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getTestList,
   getQuestionsByTest,
@@ -113,5 +136,8 @@ module.exports = {
   getQuestionsByType,
   getQuestionsByTypeAndCategory,
   getQuestionById,
-  submitQuizResult
+  submitQuizResult,
+  saveQuizDetail,
+  getQuizStats,
+  getQuizDetails
 };

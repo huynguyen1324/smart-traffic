@@ -25,7 +25,7 @@ class LawListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_law_list)
 
         findViewById<View>(R.id.btnBack)?.setOnClickListener {
-            finish()
+            NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
 
         setupRecyclerView()

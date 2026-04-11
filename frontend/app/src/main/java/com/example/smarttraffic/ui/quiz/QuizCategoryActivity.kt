@@ -15,7 +15,7 @@ import com.example.smarttraffic.network.RetrofitClient
 import com.example.smarttraffic.network.LawApiService
 import com.example.smarttraffic.network.SignApiService
 import com.example.smarttraffic.ui.adapter.LawCategoryAdapter
-import com.example.smarttraffic.ui.sign.SignCategoryAdapter
+import com.example.smarttraffic.ui.adapter.SignCategoryAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -87,8 +87,8 @@ class QuizCategoryActivity : AppCompatActivity() {
     }
 
     private fun openQuiz(categoryId: Int, quizType: String, categoryName: String) {
-        // Chuyển sang QuizActivity mới đã hỗ trợ layout hiện đại và logic lọc bảng
-        val intent = Intent(this, QuizActivity::class.java)
+        // Chuyển sang QuizCategoryListActivity để xem danh sách câu hỏi trước khi học
+        val intent = Intent(this, QuizCategoryListActivity::class.java)
         intent.putExtra("license", license)
         intent.putExtra("type", quizType)
         intent.putExtra("category_id", categoryId)

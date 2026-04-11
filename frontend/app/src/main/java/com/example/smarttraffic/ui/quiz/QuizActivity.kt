@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.smarttraffic.R
@@ -30,7 +31,6 @@ class QuizActivity : AppCompatActivity() {
 
     private lateinit var tvCategoryName: TextView
     private lateinit var tvQuestionIndex: TextView
-    private lateinit var btnSubmit: MaterialButton
     private lateinit var progressBar: ProgressBar
     private lateinit var tvQuestion: TextView
     private lateinit var imgQuestion: ImageView
@@ -44,6 +44,7 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var btnOptionD: RadioButton
     private lateinit var btnPrev: MaterialButton
     private lateinit var btnNext: MaterialButton
+    private lateinit var quizApi: QuizApiService
 
     private var license: String = "b2"
     private var type: String = "Law"
@@ -58,25 +59,25 @@ class QuizActivity : AppCompatActivity() {
         type = intent.getStringExtra("type") ?: "Law"
         categoryId = intent.getIntExtra("category_id", -1)
         categoryName = intent.getStringExtra("category_name") ?: "Luyện tập"
+        currentIndex = intent.getIntExtra("start_index", 0)
 
         bindViews()
 
         tvCategoryName.text = categoryName
 
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
-        btnSubmit.setOnClickListener { finishQuiz() }
 
         btnPrev.setOnClickListener { navigatePrev() }
         btnNext.setOnClickListener { navigateNext() }
 
         setupOptionClickListeners()
+        quizApi = RetrofitClient.retrofit.create(QuizApiService::class.java)
         loadQuestions()
     }
 
     private fun bindViews() {
         tvCategoryName = findViewById(R.id.tvCategoryName)
         tvQuestionIndex = findViewById(R.id.tvQuestionIndex)
-        btnSubmit = findViewById(R.id.btnSubmitLayout)
         progressBar = findViewById(R.id.progressBar)
         tvQuestion = findViewById(R.id.tvQuestion)
         imgQuestion = findViewById(R.id.imgQuestion)
@@ -105,11 +106,10 @@ class QuizActivity : AppCompatActivity() {
 
     private fun loadQuestions() {
         tvQuestion.text = "Đang tải dữ liệu..."
-        val api = RetrofitClient.retrofit.create(QuizApiService::class.java)
         val call = if (categoryId != -1) {
-            api.getQuestionsByTypeAndCategory(license, type, categoryId)
+            quizApi.getQuestionsByTypeAndCategory(license, type, categoryId)
         } else {
-            api.getQuestionsByType(license, type)
+            quizApi.getQuestionsByType(license, type)
         }
 
         call.enqueue(object : Callback<List<QuizQuestionDto>> {
@@ -180,8 +180,44 @@ class QuizActivity : AppCompatActivity() {
         val q = questions[currentIndex]
         userAnswers[currentIndex] = selectedOption
 
-        if (selectedOption == q.correct_option) {
+        val isCorrect = selectedOption == q.correct_option
+        if (isCorrect) {
             correctCount++
+        }
+
+        // LẤY THÔNG TIN USER ĐỂ LƯU DATABASE & TĂNG STREAK
+        val sessionManager = com.example.smarttraffic.util.SessionManager(this)
+        val userId = sessionManager.userId
+        
+        if (userId != -1) {
+            // 1. TĂNG STREAK NGAY KHI CÓ HOẠT ĐỘNG
+            quizApi.tickStreak(userId).enqueue(object : Callback<com.example.smarttraffic.dto.StreakDto> {
+                override fun onResponse(call: Call<com.example.smarttraffic.dto.StreakDto>, response: Response<com.example.smarttraffic.dto.StreakDto>) {}
+                override fun onFailure(call: Call<com.example.smarttraffic.dto.StreakDto>, t: Throwable) {}
+            })
+
+            // 2. LƯU CHI TIẾT CÂU TRẢ LỜI VÀO DATABASE
+            val request = com.example.smarttraffic.dto.QuizDetailSaveRequest(
+                user_id = userId,
+                license = license,
+                question_id = q.id,
+                chosen_option = selectedOption,
+                correct = if (isCorrect) 1 else 0
+            )
+            quizApi.saveQuizDetail(request).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        // Toast.makeText(this@QuizActivity, "Lưu vào DB thành công", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@QuizActivity, "Lỗi Server: ${response.code()}", Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@QuizActivity, "Lỗi kết nối Backend: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+        } else {
+            Toast.makeText(this, "Chưa đăng nhập! Dữ liệu KHÔNG được lưu vào DB", Toast.LENGTH_LONG).show()
         }
 
         showAnswerFeedback(selectedOption, q.correct_option ?: "")
@@ -235,9 +271,12 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun finishQuiz() {
-        val intent = Intent(this, QuizResultActivity::class.java)
-        intent.putExtra("score", correctCount)
-        intent.putExtra("total", questions.size)
+        goToResult()
+    }
+
+    private fun goToResult() {
+        val intent = Intent(this, QuizCategoryListActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.putExtra("license", license)
         intent.putExtra("type", type)
         intent.putExtra("category_id", categoryId)

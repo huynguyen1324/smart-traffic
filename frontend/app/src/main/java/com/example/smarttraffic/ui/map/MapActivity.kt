@@ -16,7 +16,7 @@ class MapActivity : AppCompatActivity() {
 
         // Nút Back
         findViewById<View>(R.id.btnBack)?.setOnClickListener {
-            finish()
+            com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
 
         // Bottom Navigation
