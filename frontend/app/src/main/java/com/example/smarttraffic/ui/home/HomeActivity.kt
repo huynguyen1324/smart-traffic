@@ -14,6 +14,7 @@ import com.example.smarttraffic.ui.sign.SignListActivity
 import com.example.smarttraffic.ui.test.TestListActivity
 import com.example.smarttraffic.util.NavigationHelper
 import com.example.smarttraffic.ui.progress.ProgressActivity
+import com.example.smarttraffic.ui.map.MapActivity
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.smarttraffic.dto.UserDto
@@ -62,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, TestListActivity::class.java))
         }
         findViewById<View>(R.id.cardMap)?.setOnClickListener {
-            android.widget.Toast.makeText(this, "Tính năng bản đồ đang phát triển", android.widget.Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MapActivity::class.java))
         }
         findViewById<View>(R.id.cardChatbot)?.setOnClickListener {
             startActivity(Intent(this, AssistantActivity::class.java))

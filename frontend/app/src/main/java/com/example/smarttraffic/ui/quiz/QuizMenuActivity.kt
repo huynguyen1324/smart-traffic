@@ -28,7 +28,7 @@ class QuizMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 3. Quiz Sa hình
+        // 3. Quiz tình huống
         findViewById<View>(R.id.cardTopicScenario).setOnClickListener {
             val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
             val license = sharedPref.getString("LEARNING_GOAL", "b2") ?: "b2"
@@ -36,7 +36,7 @@ class QuizMenuActivity : AppCompatActivity() {
             val intent = Intent(this, QuizCategoryListActivity::class.java)
             intent.putExtra(QuizConstants.KEY_LICENSE, license)
             intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_SCENARIO)
-            intent.putExtra(QuizConstants.KEY_CATEGORY_NAME, "Quiz sa hình")
+            intent.putExtra(QuizConstants.KEY_CATEGORY_NAME, "Quiz tình huống")
             startActivity(intent)
         }
 

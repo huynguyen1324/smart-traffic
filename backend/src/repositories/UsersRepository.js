@@ -12,7 +12,9 @@ class UsersRepository {
         return rows[0] || null;
     }
     async findByEmailOrPhone(identifier) {
+        console.log(`Repository seeking user with identifier: "${identifier}"`);
         const [rows] = await pool.query('SELECT * FROM `users` WHERE email = ? OR phone = ?', [identifier, identifier]);
+        console.log(`Repository found ${rows.length} matches`);
         return rows[0] || null;
     }
 

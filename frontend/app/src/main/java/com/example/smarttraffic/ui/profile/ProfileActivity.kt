@@ -47,6 +47,10 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, ProgressActivity::class.java))
         }
 
+        findViewById<View>(R.id.itemSetting)?.setOnClickListener {
+            startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+
         findViewById<View>(R.id.itemLogout)?.setOnClickListener {
             showLogoutDialog()
         }

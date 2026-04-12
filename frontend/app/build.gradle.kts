@@ -48,7 +48,8 @@ android {
                 "src/main/res-layouts/law",
                 "src/main/res-layouts/home",
                 "src/main/res-layouts/test",
-                "src/main/res-layouts/misc"
+                "src/main/res-layouts/misc",
+                "src/main/res-layouts/map"
             )
         }
     }
@@ -60,6 +61,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.google.maps)
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     
     // Retrofit

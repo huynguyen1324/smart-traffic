@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@android:color/white">
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#0F172A"
+            android:contentDescription="Back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-black"
+            android:text="Chỉnh sửa hồ sơ"
+            android:textColor="#0F172A"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Avatar -->
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="2dp">
+                    <ImageView
+                        android:id="@+id/ivEditAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@android:color/darker_gray" />
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    app:fabSize="mini"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:tint="@android:color/white"
+                    app:backgroundTint="#22C1E8"/>
+            </RelativeLayout>
+
+            <!-- Name -->
+            <TextView android:text="Họ và tên" android:textColor="#64748B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/edtEditName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_input_edit"
+                android:hint="Nhập họ tên"
+                android:inputType="textPersonName" />
+
+            <!-- Email -->
+            <TextView android:text="Email" android:textColor="#64748B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/edtEditEmail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_input_edit"
+                android:hint="example@gmail.com"
+                android:inputType="textEmailAddress" />
+
+            <!-- Phone -->
+            <TextView android:text="Số điện thoại" android:textColor="#64748B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/edtEditPhone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_input_edit"
+                android:hint="0123456789"
+                android:inputType="phone" />
+
+            <!-- Gender -->
+            <TextView android:text="Giới tính" android:textColor="#64748B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <RadioGroup
+                android:id="@+id/rgGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/rbMale" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nam" android:layout_marginEnd="16dp" />
+                <RadioButton android:id="@+id/rbFemale" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nữ" android:layout_marginEnd="16dp" />
+                <RadioButton android:id="@+id/rbOther" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Khác" />
+            </RadioGroup>
+
+            <!-- Learning Goal -->
+            <TextView android:text="Mục tiêu bằng lái" android:textColor="#64748B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <RadioGroup
+                android:id="@+id/rgGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/rbA1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hạng A1" android:layout_marginEnd="16dp" />
+                <RadioButton android:id="@+id/rbB2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hạng B2" />
+            </RadioGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveProfile"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Lưu thay đổi"
+                app:cornerRadius="12dp"
+                android:backgroundTint="#0F172A" />
+
+            <TextView
+                android:id="@+id/btnDeleteInside"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Xoá tài khoản của tôi"
+                android:textColor="#EF4444"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

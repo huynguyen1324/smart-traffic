@@ -27,4 +27,7 @@ interface UserApiService {
 
     @PUT("api/users/{id}")
     fun updateUser(@Path("id") id: Int, @Body user: UserDto): Call<UpdateResponse>
+
+    @retrofit2.http.DELETE("api/users/{id}")
+    fun deleteUser(@Path("id") id: Int): Call<UpdateResponse>
 }
