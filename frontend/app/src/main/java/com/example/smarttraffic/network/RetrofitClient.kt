@@ -5,9 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-//    private const val BASE_URL = "https://smart-traffic-6j7m.onrender.com/"
-    private const val BASE_URL = "http://172.18.125.70:5000/" // Dùng cho điện thoại thật cùng Wi-Fi
-    // private const val BASE_URL = "http://10.0.2.2:5000/" // Dùng cho Android Emulator
+//    private const val BASE_URL = "http://172.18.125.70:5000/" // Dùng cho điện thoại thật cùng Wi-Fi
+//    private const val BASE_URL = "http://10.0.2.2:5000/" // Dùng cho Android Emulator
+    private const val BASE_URL = "https://smart-traffic-j4ej.onrender.com" // Server mọi máy truy cập được
     const val IMAGE_URL_BASE = BASE_URL + "images/"
 
     private val okHttpClient = okhttp3.OkHttpClient.Builder()
