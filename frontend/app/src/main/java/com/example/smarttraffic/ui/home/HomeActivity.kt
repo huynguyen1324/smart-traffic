@@ -9,7 +9,7 @@ import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.assistant.AssistantActivity
 import com.example.smarttraffic.ui.lesson.LawListActivity
 import com.example.smarttraffic.ui.profile.ProfileActivity
-import com.example.smarttraffic.ui.quiz.QuizPracticeActivity
+import com.example.smarttraffic.ui.quiz.QuizMenuActivity
 import com.example.smarttraffic.ui.search.SearchActivity
 import com.example.smarttraffic.ui.sign.SignListActivity
 import com.example.smarttraffic.ui.simulation.SimulationListActivity
@@ -60,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, SimulationListActivity::class.java))
         }
         findViewById<View>(R.id.cardQuiz)?.setOnClickListener {
-            startActivity(Intent(this, QuizPracticeActivity::class.java))
+            startActivity(Intent(this, QuizMenuActivity::class.java))
         }
         findViewById<View>(R.id.cardExam)?.setOnClickListener {
             startActivity(Intent(this, com.example.smarttraffic.ui.test.TestListActivity::class.java))

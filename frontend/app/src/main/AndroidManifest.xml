@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -42,7 +43,7 @@
         <activity android:name=".ui.simulation.SimulationDetailActivity"/>
         <activity android:name=".ui.simulation.SimulationResultActivity" />
         
-        <activity android:name=".ui.quiz.QuizPracticeActivity" />
+        <activity android:name=".ui.quiz.QuizMenuActivity" />
         <activity android:name=".ui.quiz.QuizCategoryActivity" />
         <activity android:name=".ui.quiz.QuizCategoryListActivity" />
         <activity android:name=".ui.quiz.QuizActivity" />
@@ -56,6 +57,16 @@
         <activity android:name=".ui.map.MapActivity" />
         <activity android:name=".ui.profile.ProfileActivity"/>
         <activity android:name=".ui.progress.ProgressActivity"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

@@ -9,7 +9,7 @@ import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.home.HomeActivity
 import com.example.smarttraffic.ui.lesson.LawListActivity
 import com.example.smarttraffic.ui.profile.ProfileActivity
-import com.example.smarttraffic.ui.quiz.QuizPracticeActivity
+import com.example.smarttraffic.ui.quiz.QuizMenuActivity
 import com.example.smarttraffic.ui.sign.SignListActivity
 
 class SearchActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.cardQuiz).setOnClickListener {
-            startActivity(Intent(this, QuizPracticeActivity::class.java))
+            startActivity(Intent(this, QuizMenuActivity::class.java))
         }
 
         // 3. Xử lý xóa lịch sử (Giả lập)

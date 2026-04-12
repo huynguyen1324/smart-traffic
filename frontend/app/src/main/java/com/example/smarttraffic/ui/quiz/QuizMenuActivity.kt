@@ -6,25 +6,25 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.home.HomeActivity
-import com.example.smarttraffic.ui.profile.ProfileActivity
+import com.example.smarttraffic.util.QuizConstants
 
-class QuizPracticeActivity : AppCompatActivity() {
+class QuizMenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_quiz)
+        setContentView(R.layout.activity_quiz_menu)
 
         // 1. Quiz Luật
         findViewById<View>(R.id.cardTopicLaw).setOnClickListener {
             val intent = Intent(this, QuizCategoryActivity::class.java)
-            intent.putExtra("type", "Law")
+            intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_LAW)
             startActivity(intent)
         }
 
         // 2. Quiz Biển báo
         findViewById<View>(R.id.cardTopicSign).setOnClickListener {
             val intent = Intent(this, QuizCategoryActivity::class.java)
-            intent.putExtra("type", "Sign")
+            intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_SIGN)
             startActivity(intent)
         }
 

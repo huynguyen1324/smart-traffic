@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Gợi ý nhanh cho bạn"
+        android:textColor="#64748B"
+        android:textSize="13sp"
+        android:letterSpacing="0.05" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignAsk"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="8dp"
+            android:text="Giải thích ý nghĩa biển báo cấm"
+            android:textAllCaps="false"
+            android:textColor="#0F172A"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            app:cornerRadius="16dp"
+            app:strokeColor="#E2E8F0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTurnRight"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="8dp"
+            android:text="Thế nào là rẽ phải đúng luật?"
+            android:textAllCaps="false"
+            android:textColor="#0F172A"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            app:cornerRadius="16dp"
+            app:strokeColor="#E2E8F0" />
+    </LinearLayout>
+</LinearLayout>
