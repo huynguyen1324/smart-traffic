@@ -11,6 +11,10 @@ class FavouritesRepository {
         const [rows] = await pool.query('SELECT * FROM `favourites` WHERE id = ?', [id]);
         return rows[0] || null;
     }
+    async findOne(userId, type, typeId) {
+        const [rows] = await pool.query('SELECT * FROM `favourites` WHERE user_id = ? AND type = ? AND type_id = ?', [userId, type, typeId]);
+        return rows[0] || null;
+    }
 
     async save(data) {
         const [result] = await pool.query('INSERT INTO `favourites` SET ?', [data]);

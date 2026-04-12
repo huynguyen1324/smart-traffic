@@ -44,8 +44,8 @@ class RegisterActivity : AppCompatActivity() {
             val password = edtPassword.text.toString().trim()
             val confirm = edtConfirm.text.toString().trim()
             
-            val gendle = if (findViewById<RadioButton>(R.id.rbMale).isChecked) "male" else "female"
-            val defaultAvatar = if (gendle == "male") "default-male.png" else "default-female.png"
+            val gender = if (findViewById<RadioButton>(R.id.rbMale).isChecked) "male" else "female"
+            val defaultAvatar = if (gender == "male") "default-male.png" else "default-female.png"
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập họ tên", Toast.LENGTH_SHORT).show()
@@ -72,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
                 email = if (email.isNotEmpty()) email else null, 
                 phone = if (phone.isNotEmpty()) phone else null,
                 password = password,
-                gendle = gendle,
+                gender = gender,
                 avatar_url = defaultAvatar
             )
             val apiService = RetrofitClient.retrofit.create(UserApiService::class.java)

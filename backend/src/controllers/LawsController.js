@@ -16,26 +16,17 @@ class LawsController {
         } catch (err) { res.status(500).json({ error: err.message }); }
     }
 
-    async create(req, res) {
+    async getByCategory(req, res) {
         try {
-            const id = await lawsService.create(req.body);
-            res.status(201).json({ message: 'Created', id });
+            const data = await lawsService.getByCategory(req.params.category_id);
+            res.json(data);
         } catch (err) { res.status(500).json({ error: err.message }); }
     }
 
-    async update(req, res) {
+    async getByCategory(req, res) {
         try {
-            const updated = await lawsService.update(req.params.id, req.body);
-            if (!updated) return res.status(404).json({ message: 'Not found' });
-            res.json({ message: 'Updated' });
-        } catch (err) { res.status(500).json({ error: err.message }); }
-    }
-
-    async delete(req, res) {
-        try {
-            const deleted = await lawsService.delete(req.params.id);
-            if (!deleted) return res.status(404).json({ message: 'Not found' });
-            res.json({ message: 'Deleted' });
+            const data = await lawsService.getByCategory(req.params.category_id);
+            res.json(data);
         } catch (err) { res.status(500).json({ error: err.message }); }
     }
 }

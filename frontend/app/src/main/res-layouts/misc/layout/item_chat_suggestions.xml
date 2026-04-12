@@ -13,8 +13,9 @@
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-medium"
         android:text="Gợi ý nhanh cho bạn"
-        android:textColor="#64748B"
-        android:textSize="13sp"
+        android:textColor="#334155"
+        android:textSize="14sp"
+        android:textStyle="bold"
         android:letterSpacing="0.05" />
 
     <LinearLayout
@@ -31,11 +32,14 @@
             android:layout_marginBottom="8dp"
             android:text="Giải thích ý nghĩa biển báo cấm"
             android:textAllCaps="false"
-            android:textColor="#0F172A"
+            android:textColor="#0369A1"
+            android:fontFamily="sans-serif-medium"
             android:gravity="start|center_vertical"
             android:paddingStart="16dp"
             app:cornerRadius="16dp"
-            app:strokeColor="#E2E8F0" />
+            app:strokeColor="#22C1E8"
+            app:strokeWidth="1.5dp"
+            app:backgroundTint="#F0F9FF" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTurnRight"
@@ -45,10 +49,13 @@
             android:layout_marginBottom="8dp"
             android:text="Thế nào là rẽ phải đúng luật?"
             android:textAllCaps="false"
-            android:textColor="#0F172A"
+            android:textColor="#0369A1"
+            android:fontFamily="sans-serif-medium"
             android:gravity="start|center_vertical"
             android:paddingStart="16dp"
             app:cornerRadius="16dp"
-            app:strokeColor="#E2E8F0" />
+            app:strokeColor="#22C1E8"
+            app:strokeWidth="1.5dp"
+            app:backgroundTint="#F0F9FF" />
     </LinearLayout>
 </LinearLayout>

@@ -15,9 +15,6 @@ import retrofit2.http.Path
 
 interface QuizApiService {
 
-    @GET("api/quizzes/{license}/questions")
-    fun getAllQuestions(@Path("license") license: String): Call<List<QuizQuestionDto>>
-
     @GET("api/quizzes/{license}/questions/type/{type}")
     fun getQuestionsByType(
         @Path("license") license: String,
@@ -30,15 +27,6 @@ interface QuizApiService {
         @Path("type") type: String,
         @Path("category_id") category_id: Int
     ): Call<List<QuizQuestionDto>>
-
-    @GET("api/quizzes/{license}/questions/{id}")
-    fun getQuestionById(
-        @Path("license") license: String,
-        @Path("id") id: Int
-    ): Call<QuizQuestionDto>
-
-    @POST("api/quizzes/results")
-    fun submitQuizResult(@Body request: QuizSubmitRequest): Call<QuizSubmitResponse>
 
     @POST("api/quizzes/details")
     fun saveQuizDetail(@Body request: QuizDetailSaveRequest): Call<Void>

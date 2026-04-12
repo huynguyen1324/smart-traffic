@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import java.util.Locale
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -214,7 +215,7 @@ class TestActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = (millisUntilFinished / 1000) / 60
                 val seconds = (millisUntilFinished / 1000) % 60
-                tvTimer.text = String.format("%02d:%02d", minutes, seconds)
+                tvTimer.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
 
                 // Cảnh báo khi còn dưới 1 phút (chữ đỏ nhấp nháy hoặc hiệu ứng khác có thể thêm sau)
             }
@@ -262,7 +263,7 @@ class TestActivity : AppCompatActivity() {
         val resultDto = com.example.smarttraffic.dto.TestResultDto(
             user_id = userId,
             test_id = testId,
-            license = license.uppercase(),
+            license = license.uppercase(Locale.ROOT),
             total = questions.size,
             correct = correct,
             wrong = wrong,

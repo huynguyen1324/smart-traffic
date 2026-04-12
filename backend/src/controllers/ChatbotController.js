@@ -1,6 +1,5 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const userStreaksService = require('../services/UserStreaksService');
-const testResultsService = require('../services/TestResultsService');
 
 // 1. Khởi tạo bên ngoài để tránh khởi tạo lại mỗi khi gọi API (tối ưu hiệu năng)
 const apiKey = process.env.GEMINI_API_KEY;
@@ -48,12 +47,11 @@ class ChatbotController {
             const modelName = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite-preview";
             const model = genAI.getGenerativeModel({ 
                 model: modelName,
-                systemInstruction: systemInstructions
+                systemInstruction: systemInstructions,
+                generationConfig: { responseMimeType: "application/json" }
             });
 
-            // Xây dựng nội dung gửi đi bao gồm lịch sử (tối đa 5 câu gần nhất)
-            let promptContext = `LỊCH SỬ TRÒ CHUYỆN:\n`;
-            
+            // 4. Xây dựng nội dung gửi đi bao gồm lịch sử (tối đa 5 câu gần nhất)
             let historyArray = [];
             try {
                 historyArray = typeof history === 'string' ? JSON.parse(history) : (history || []);
@@ -61,6 +59,7 @@ class ChatbotController {
                 historyArray = [];
             }
             
+            let promptContext = `LỊCH SỬ TRÒ CHUYỆN:\n`;
             if (historyArray && historyArray.length > 0) {
                 historyArray.forEach(msg => {
                     promptContext += `${msg.isUser ? "User" : "Bot"}: ${msg.text}\n`;
@@ -83,18 +82,13 @@ class ChatbotController {
             // 6. Gọi AI và xử lý kết quả
             const result = await model.generateContent(reqParts);
             const response = await result.response;
-            let text = response.text();
-
-            // Làm sạch triệt để: lấy nội dung giữa { và }
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                text = jsonMatch[0];
-            }
+            const text = response.text();
 
             try {
                 const jsonObj = JSON.parse(text);
                 res.json(jsonObj);
             } catch (e) {
+                console.error("JSON Parse Error on AI output:", text);
                 res.json({ reply: text, command: null });
             }
 

@@ -11,6 +11,10 @@ class UsersRepository {
         const [rows] = await pool.query('SELECT * FROM `users` WHERE id = ?', [id]);
         return rows[0] || null;
     }
+    async findByEmailOrPhone(identifier) {
+        const [rows] = await pool.query('SELECT * FROM `users` WHERE email = ? OR phone = ?', [identifier, identifier]);
+        return rows[0] || null;
+    }
 
     async save(data) {
         const [result] = await pool.query('INSERT INTO `users` SET ?', [data]);

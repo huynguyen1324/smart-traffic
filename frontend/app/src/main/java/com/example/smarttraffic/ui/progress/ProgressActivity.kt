@@ -101,7 +101,7 @@ class ProgressActivity : AppCompatActivity() {
                         tvNoTestData.visibility = View.GONE
                         layoutRecentTests.removeAllViews()
                         
-                        val recentResults = results.takeLast(5).reversed() 
+                        val recentResults = results.take(5) 
                         
                         val inflater = android.view.LayoutInflater.from(this@ProgressActivity)
                         val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault())

@@ -14,7 +14,7 @@ import com.example.smarttraffic.dto.FavoriteResponse
 import com.example.smarttraffic.dto.SignDto
 import com.example.smarttraffic.network.FavoriteApiService
 import com.example.smarttraffic.network.RetrofitClient
-import com.example.smarttraffic.repository.SignApiRepository
+import com.example.smarttraffic.network.SignApiService
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,7 +22,7 @@ import retrofit2.Response
 
 class SignDetailActivity : AppCompatActivity() {
 
-    private lateinit var repository: SignApiRepository
+    private lateinit var signApi: SignApiService
     private var isFavorite = false
     private var currentFavoriteId: Int? = null
 
@@ -30,7 +30,7 @@ class SignDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_detail)
 
-        repository = SignApiRepository()
+        signApi = RetrofitClient.retrofit.create(SignApiService::class.java)
         findViewById<android.view.View>(R.id.btnBack).setOnClickListener { finish() }
 
         val signId = intent.getIntExtra("sign_id", -1)
@@ -94,7 +94,7 @@ class SignDetailActivity : AppCompatActivity() {
         }
 
         // Load Dữ liệu Sign
-        repository.getSignById(signId).enqueue(object : Callback<SignDto> {
+        signApi.getSignById(signId).enqueue(object : Callback<SignDto> {
             override fun onResponse(call: Call<SignDto>, response: Response<SignDto>) {
                 if (response.isSuccessful) {
                     val sign = response.body()
@@ -140,19 +140,16 @@ class SignDetailActivity : AppCompatActivity() {
     private fun checkFavoriteStatus(userId: Int, signId: Int, btn: MaterialButton) {
         if (userId == -1) return
         val favApi = RetrofitClient.retrofit.create(FavoriteApiService::class.java)
-        favApi.getAllFavorites().enqueue(object : Callback<List<FavoriteDto>> {
-            override fun onResponse(call: Call<List<FavoriteDto>>, response: Response<List<FavoriteDto>>) {
+        favApi.checkFavorite(userId, "Sign", signId).enqueue(object : Callback<FavoriteDto> {
+            override fun onResponse(call: Call<FavoriteDto>, response: Response<FavoriteDto>) {
                 if (response.isSuccessful && response.body() != null) {
-                    val list = response.body()!!
-                    val found = list.find { it.user_id == userId && it.type == "Sign" && it.type_id == signId }
-                    if (found != null) {
-                        isFavorite = true
-                        currentFavoriteId = found.id
-                        updateFavoriteUI(btn)
-                    }
+                    val found = response.body()!!
+                    isFavorite = true
+                    currentFavoriteId = found.id
+                    updateFavoriteUI(btn)
                 }
             }
-            override fun onFailure(call: Call<List<FavoriteDto>>, t: Throwable) {}
+            override fun onFailure(call: Call<FavoriteDto>, t: Throwable) {}
         })
     }
 }

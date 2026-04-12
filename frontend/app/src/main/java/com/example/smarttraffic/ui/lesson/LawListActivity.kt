@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smarttraffic.R
 import com.example.smarttraffic.dto.LawCategoryDto
-import com.example.smarttraffic.repository.LawApiRepository
+import com.example.smarttraffic.network.LawApiService
+import com.example.smarttraffic.network.RetrofitClient
 import com.example.smarttraffic.ui.adapter.LawCategoryAdapter
 import com.example.smarttraffic.util.NavigationHelper
 
 class LawListActivity : AppCompatActivity() {
 
-    private val repository = LawApiRepository()
+    private lateinit var lawApi: LawApiService
     private lateinit var adapter: LawCategoryAdapter
     private lateinit var rvLessons: RecyclerView
 
@@ -28,6 +29,7 @@ class LawListActivity : AppCompatActivity() {
             NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
 
+        lawApi = RetrofitClient.retrofit.create(LawApiService::class.java)
         setupRecyclerView()
         loadCategories()
         
@@ -52,7 +54,7 @@ class LawListActivity : AppCompatActivity() {
     }
 
     private fun loadCategories() {
-        repository.getCategories().enqueue(object : retrofit2.Callback<List<LawCategoryDto>> {
+        lawApi.getCategories().enqueue(object : retrofit2.Callback<List<LawCategoryDto>> {
             override fun onResponse(
                 call: retrofit2.Call<List<LawCategoryDto>>,
                 response: retrofit2.Response<List<LawCategoryDto>>

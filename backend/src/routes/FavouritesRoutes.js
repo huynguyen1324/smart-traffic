@@ -3,6 +3,7 @@ const router = express.Router();
 const favouritesController = require('../controllers/FavouritesController');
 
 router.get('/', favouritesController.getAll.bind(favouritesController));
+router.get('/check', favouritesController.check.bind(favouritesController));
 router.get('/:id', favouritesController.getById.bind(favouritesController));
 router.post('/', favouritesController.create.bind(favouritesController));
 router.put('/:id', favouritesController.update.bind(favouritesController));

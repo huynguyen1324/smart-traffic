@@ -76,13 +76,10 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTopicLaw"
+                    style="@style/Widget.SmartTraffic.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
+                    android:layout_marginBottom="12dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -102,13 +99,10 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTopicSign"
+                    style="@style/Widget.SmartTraffic.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
+                    android:layout_marginBottom="12dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -122,6 +116,29 @@
                             android:src="@drawable/ic_sign"
                             app:tint="#3B82F6" />
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:text="Quiz biển báo" android:textColor="#0F172A" android:textStyle="bold" android:textSize="15sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CBD5E1" android:textSize="24sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTopicScenario"
+                    style="@style/Widget.SmartTraffic.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_marginBottom="12dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="#F3E8FF"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_simulation"
+                            app:tint="#A855F7" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:text="Quiz sa hình" android:textColor="#0F172A" android:textStyle="bold" android:textSize="15sp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CBD5E1" android:textSize="24sp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

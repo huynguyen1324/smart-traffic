@@ -16,4 +16,7 @@ interface LawApiService {
 
     @GET("api/laws/{id}")
     fun getLawById(@Path("id") id: Int): Call<LawDto>
+
+    @GET("api/laws/category/{category_id}")
+    fun getLawsByCategory(@Path("category_id") categoryId: Int): Call<List<LawDto>>
 }

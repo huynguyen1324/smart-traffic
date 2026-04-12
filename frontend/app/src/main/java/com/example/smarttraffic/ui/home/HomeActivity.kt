@@ -10,9 +10,8 @@ import com.example.smarttraffic.ui.assistant.AssistantActivity
 import com.example.smarttraffic.ui.lesson.LawListActivity
 import com.example.smarttraffic.ui.profile.ProfileActivity
 import com.example.smarttraffic.ui.quiz.QuizMenuActivity
-import com.example.smarttraffic.ui.search.SearchActivity
 import com.example.smarttraffic.ui.sign.SignListActivity
-import com.example.smarttraffic.ui.simulation.SimulationListActivity
+import com.example.smarttraffic.ui.test.TestListActivity
 import com.example.smarttraffic.util.NavigationHelper
 import com.example.smarttraffic.ui.progress.ProgressActivity
 import android.widget.ImageView
@@ -56,17 +55,17 @@ class HomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.cardSign)?.setOnClickListener {
             startActivity(Intent(this, SignListActivity::class.java))
         }
-        findViewById<View>(R.id.cardSimulation)?.setOnClickListener {
-            startActivity(Intent(this, SimulationListActivity::class.java))
-        }
         findViewById<View>(R.id.cardQuiz)?.setOnClickListener {
             startActivity(Intent(this, QuizMenuActivity::class.java))
         }
         findViewById<View>(R.id.cardExam)?.setOnClickListener {
-            startActivity(Intent(this, com.example.smarttraffic.ui.test.TestListActivity::class.java))
+            startActivity(Intent(this, TestListActivity::class.java))
         }
         findViewById<View>(R.id.cardMap)?.setOnClickListener {
-            startActivity(Intent(this, com.example.smarttraffic.ui.map.MapActivity::class.java))
+            android.widget.Toast.makeText(this, "Tính năng bản đồ đang phát triển", android.widget.Toast.LENGTH_SHORT).show()
+        }
+        findViewById<View>(R.id.cardChatbot)?.setOnClickListener {
+            startActivity(Intent(this, AssistantActivity::class.java))
         }
         
         // --- PROGRESS CARD CLICK ---
@@ -78,9 +77,7 @@ class HomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnProfile)?.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
-        findViewById<View>(R.id.btnSearch)?.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
-        }
+
         findViewById<View>(R.id.btnAssistant)?.setOnClickListener {
             startActivity(Intent(this, AssistantActivity::class.java))
         }

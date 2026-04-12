@@ -47,8 +47,8 @@ class TestListActivity : AppCompatActivity() {
 
         loadTests()
 
-        // Setup bottom navigation
-        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navSimulation)
+        // Standardized Bottom Nav
+        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navQuiz)
     }
 
     private fun loadTests() {

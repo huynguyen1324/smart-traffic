@@ -7,6 +7,6 @@ data class UserDto(
     val phone: String? = null,
     val password: String? = null,
     val avatar_url: String? = null,
-    val gendle: String? = null,
+    val gender: String? = null,
     val learning_goal: String? = null
 )

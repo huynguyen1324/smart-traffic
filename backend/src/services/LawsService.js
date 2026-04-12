@@ -9,16 +9,8 @@ class LawsService {
         return await lawsRepository.findById(id);
     }
 
-    async create(data) {
-        return await lawsRepository.save(data);
-    }
-
-    async update(id, data) {
-        return await lawsRepository.update(id, data);
-    }
-
-    async delete(id) {
-        return await lawsRepository.delete(id);
+    async getByCategory(categoryId) {
+        return await lawsRepository.findByCategory(categoryId);
     }
 }
 module.exports = new LawsService();

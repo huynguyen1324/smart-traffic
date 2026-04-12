@@ -10,10 +10,14 @@ import retrofit2.http.Path
 
 data class RegisterResponse(val message: String, val id: Int)
 data class UpdateResponse(val message: String)
+data class LoginRequest(val identifier: String, val password: String)
 
 interface UserApiService {
     @GET("api/users")
     fun getAllUsers(): Call<List<UserDto>>
+
+    @POST("api/users/login")
+    fun loginUser(@Body request: LoginRequest): Call<UserDto>
 
     @GET("api/users/{id}")
     fun getUserById(@Path("id") id: Int): Call<UserDto>

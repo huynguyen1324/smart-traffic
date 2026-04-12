@@ -83,6 +83,9 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input"
                 android:hint="VD: 0912345678"
+                android:inputType="textEmailAddress"
+                android:importantForAutofill="yes"
+                android:autofillHints="emailAddress"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" />
 
@@ -103,6 +106,8 @@
                 android:background="@drawable/bg_input"
                 android:hint="Nhập mật khẩu của bạn"
                 android:inputType="textPassword"
+                android:importantForAutofill="yes"
+                android:autofillHints="password"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" />
 
@@ -128,11 +133,7 @@
                 app:backgroundTint="#22C1E8"
                 app:cornerRadius="29dp" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"/>
+
 
             <TextView
                 android:id="@+id/tvRegister"

@@ -1,6 +1,23 @@
 const usersService = require('../services/UsersService');
 
 class UsersController {
+    async login(req, res) {
+        try {
+            const { identifier, password } = req.body;
+            console.log(`Attempting login for: ${identifier}`);
+            const user = await usersService.login(identifier, password);
+            if (!user) {
+                console.log(`Login failed for: ${identifier}`);
+                return res.status(401).json({ message: 'Invalid credentials' });
+            }
+            console.log(`Login successful for: ${identifier}`);
+            res.json(user);
+        } catch (err) { 
+            console.error(`Login error for ${identifier}:`, err.message);
+            res.status(500).json({ error: err.message }); 
+        }
+    }
+
     async getAll(req, res) {
         try {
             const data = await usersService.getAll();

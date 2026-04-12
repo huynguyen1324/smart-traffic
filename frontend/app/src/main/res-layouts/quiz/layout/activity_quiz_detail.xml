@@ -103,7 +103,7 @@
                 <ImageView
                     android:id="@+id/imgQuestion"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:adjustViewBounds="true"
@@ -194,43 +194,36 @@
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:elevation="8dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingHorizontal="20dp"
         android:paddingTop="12dp"
         android:paddingBottom="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrev"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Câu trước"
+            android:textAllCaps="false"
+            android:textColor="#22C1E8"
+            app:cornerRadius="26dp"
+            app:strokeColor="#22C1E8"
+            app:strokeWidth="1.5dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPrev"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="Câu trước"
-                android:textAllCaps="false"
-                android:textColor="#22C1E8"
-                app:cornerRadius="26dp"
-                app:strokeColor="#22C1E8"
-                app:strokeWidth="1.5dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNext"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="Câu sau"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                app:backgroundTint="#22C1E8"
-                app:cornerRadius="26dp" />
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Câu sau"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#22C1E8"
+            app:cornerRadius="26dp" />
 
     </LinearLayout>
 

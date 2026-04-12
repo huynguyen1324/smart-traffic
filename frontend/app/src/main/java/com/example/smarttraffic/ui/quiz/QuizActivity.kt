@@ -28,6 +28,7 @@ class QuizActivity : AppCompatActivity() {
     private var currentIndex = 0
     private var correctCount = 0
     private var userAnswers = mutableMapOf<Int, String>()
+    private var isStreakTicked = false
 
     private lateinit var tvCategoryName: TextView
     private lateinit var tvQuestionIndex: TextView
@@ -190,11 +191,15 @@ class QuizActivity : AppCompatActivity() {
         val userId = sessionManager.userId
         
         if (userId != -1) {
-            // 1. TĂNG STREAK NGAY KHI CÓ HOẠT ĐỘNG
-            quizApi.tickStreak(userId).enqueue(object : Callback<com.example.smarttraffic.dto.StreakDto> {
-                override fun onResponse(call: Call<com.example.smarttraffic.dto.StreakDto>, response: Response<com.example.smarttraffic.dto.StreakDto>) {}
-                override fun onFailure(call: Call<com.example.smarttraffic.dto.StreakDto>, t: Throwable) {}
-            })
+            // 1. TĂNG STREAK (CHỈ 1 LẦN PER SESSION)
+            if (!isStreakTicked) {
+                quizApi.tickStreak(userId).enqueue(object : Callback<com.example.smarttraffic.dto.StreakDto> {
+                    override fun onResponse(call: Call<com.example.smarttraffic.dto.StreakDto>, response: Response<com.example.smarttraffic.dto.StreakDto>) {
+                        if (response.isSuccessful) isStreakTicked = true
+                    }
+                    override fun onFailure(call: Call<com.example.smarttraffic.dto.StreakDto>, t: Throwable) {}
+                })
+            }
 
             // 2. LƯU CHI TIẾT CÂU TRẢ LỜI VÀO DATABASE
             val request = com.example.smarttraffic.dto.QuizDetailSaveRequest(

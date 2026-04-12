@@ -1,6 +1,14 @@
 const usersRepository = require('../repositories/UsersRepository');
 
 class UsersService {
+    async login(identifier, password) {
+        const user = await usersRepository.findByEmailOrPhone(identifier);
+        if (user && user.password === password) {
+            return user;
+        }
+        return null;
+    }
+
     async getAll() {
         return await usersRepository.findAll();
     }

@@ -53,41 +53,35 @@
                 app:cardCornerRadius="110dp"
                 app:strokeWidth="2dp"
                 app:strokeColor="#E2E8F0">
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/layoutScoreResult"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
-                    android:padding="24dp">
+                    android:padding="24dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
                     
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvFinalScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        
-                        <TextView
-                            android:id="@+id/tvFinalScore"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:text="21/25"
-                            android:textColor="@color/primary"
-                            android:textSize="48sp" />
-                        
-                        <TextView
-                            android:id="@+id/tvResultStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="ĐẠT"
-                            android:textColor="@color/primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-                    </LinearLayout>
-                </RelativeLayout>
+                        android:fontFamily="sans-serif-black"
+                        android:text="21/25"
+                        android:textColor="@color/primary"
+                        android:textSize="48sp" />
+                    
+                    <TextView
+                        android:id="@+id/tvResultStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="ĐẠT"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView

@@ -10,11 +10,10 @@ const lawCategoriesRoutes = require('./routes/LawCategoriesRoutes');
 const lawsRoutes = require('./routes/LawsRoutes');
 const signCategoriesRoutes = require('./routes/SignCategoriesRoutes');
 const signsRoutes = require('./routes/SignsRoutes');
-const testResultDetailRoutes = require('./routes/TestResultDetailRoutes');
 const testResultsRoutes = require('./routes/TestResultsRoutes');
 const usersRoutes = require('./routes/UsersRoutes');
 const userStreaksRoutes = require('./routes/UserStreaksRoutes');
-const quizRoutes = require('./routes/quizRoutes');
+const quizRoutes = require('./routes/QuizRoutes');
 const chatbotRoutes = require('./routes/ChatbotRoutes');
 
 const app = express();
@@ -30,7 +29,6 @@ app.use('/api/law-categories', lawCategoriesRoutes);
 app.use('/api/laws', lawsRoutes);
 app.use('/api/sign-categories', signCategoriesRoutes);
 app.use('/api/signs', signsRoutes);
-app.use('/api/test-result-detail', testResultDetailRoutes);
 app.use('/api/test-results', testResultsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/quizzes', quizRoutes);
@@ -50,5 +48,3 @@ app.listen(PORT, '0.0.0.0', async () => {
         console.error("❌ DB connection failed:", err.message);
     }
 });
-
-// Triggering restart to load new .env variables

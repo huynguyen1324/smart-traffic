@@ -9,6 +9,10 @@ class FavouritesService {
         return await favouritesRepository.findById(id);
     }
 
+    async check(userId, type, typeId) {
+        return await favouritesRepository.findOne(userId, type, typeId);
+    }
+
     async create(data) {
         return await favouritesRepository.save(data);
     }

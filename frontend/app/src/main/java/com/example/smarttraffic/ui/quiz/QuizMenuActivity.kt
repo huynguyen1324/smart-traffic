@@ -28,10 +28,22 @@ class QuizMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 3. Điều hướng
+        // 3. Quiz Sa hình
+        findViewById<View>(R.id.cardTopicScenario).setOnClickListener {
+            val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+            val license = sharedPref.getString("LEARNING_GOAL", "b2") ?: "b2"
+            
+            val intent = Intent(this, QuizCategoryListActivity::class.java)
+            intent.putExtra(QuizConstants.KEY_LICENSE, license)
+            intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_SCENARIO)
+            intent.putExtra(QuizConstants.KEY_CATEGORY_NAME, "Quiz sa hình")
+            startActivity(intent)
+        }
+
+        // 4. Điều hướng
         findViewById<View>(R.id.btnBack).setOnClickListener {
             com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
-        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, -1)
+        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navQuiz)
     }
 }

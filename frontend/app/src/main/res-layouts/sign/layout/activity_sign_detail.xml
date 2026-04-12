@@ -52,7 +52,7 @@
             <ImageView
                 android:id="@+id/imgSign"
                 android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_height="220dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:adjustViewBounds="true"

@@ -51,16 +51,13 @@ class LawCategoryActivity : AppCompatActivity() {
 
     private fun loadLaws(categoryId: Int) {
         val api = RetrofitClient.retrofit.create(LawApiService::class.java)
-        api.getAllLaws().enqueue(object : Callback<List<LawDto>> {
+        api.getLawsByCategory(categoryId).enqueue(object : Callback<List<LawDto>> {
             override fun onResponse(call: Call<List<LawDto>>, response: Response<List<LawDto>>) {
                 if (response.isSuccessful) {
-                    val allLaws = response.body() ?: emptyList()
-                    lawList = allLaws.filter { it.category_id == categoryId }
-                    Log.d("LAW_FILTER", "CategoryId: $categoryId, Total Laws: ${allLaws.size}, Filtered: ${lawList.size}")
-                    
+                    lawList = response.body() ?: emptyList()
                     setupAdapter()
                     if (lawList.isEmpty()) {
-                        Toast.makeText(this@LawCategoryActivity, "Chưa có điều luật cho chủ đề này (ID: $categoryId)", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@LawCategoryActivity, "Chưa có điều luật cho chủ đề này", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(this@LawCategoryActivity, "Lỗi server: ${response.code()}", Toast.LENGTH_SHORT).show()

@@ -37,41 +37,43 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            Log.d("LoginActivity", "Bắt đầu đăng nhập với: $email")
             btnLogin.isEnabled = false
             Toast.makeText(this, "Đang kết nối...", Toast.LENGTH_SHORT).show()
 
-            RetrofitClient.retrofit.create(UserApiService::class.java)
-                .getAllUsers()
-                .enqueue(object : Callback<List<UserDto>> {
-                    override fun onResponse(call: Call<List<UserDto>>, response: Response<List<UserDto>>) {
-                        btnLogin.isEnabled = true
-                        if (response.isSuccessful && response.body() != null) {
-                            val matchedUser = response.body()!!.find {
-                                (it.email == email || it.phone == email) && it.password == password
-                            }
-                            if (matchedUser != null) {
-                                com.example.smarttraffic.util.SessionManager(this@LoginActivity).saveLogin(
-                                    matchedUser.id ?: -1,
-                                    matchedUser.full_name ?: "",
-                                    matchedUser.learning_goal ?: "B2"
-                                )
-                                Toast.makeText(this@LoginActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                                finish()
-                            } else {
-                                Toast.makeText(this@LoginActivity, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this@LoginActivity, "Lỗi từ server", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+            val apiService = RetrofitClient.retrofit.create(UserApiService::class.java)
+            val loginRequest = com.example.smarttraffic.network.LoginRequest(email, password)
 
-                    override fun onFailure(call: Call<List<UserDto>>, t: Throwable) {
-                        btnLogin.isEnabled = true
-                        Log.e("LoginActivity", "Lỗi kết nối", t)
-                        Toast.makeText(this@LoginActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
+            apiService.loginUser(loginRequest).enqueue(object : Callback<UserDto> {
+                override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
+                    Log.d("LoginActivity", "Phản hồi từ server: ${response.code()}")
+                    btnLogin.isEnabled = true
+                    if (response.isSuccessful && response.body() != null) {
+                        val user = response.body()!!
+                        Log.d("LoginActivity", "Đăng nhập thành công cho người dùng: ${user.full_name}")
+                        com.example.smarttraffic.util.SessionManager(this@LoginActivity).saveLogin(
+                            user.id ?: -1,
+                            user.full_name ?: "",
+                            user.learning_goal ?: "B2"
+                        )
+                        Toast.makeText(this@LoginActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                        finish()
+                    } else if (response.code() == 401) {
+                        Log.w("LoginActivity", "Sai tài khoản hoặc mật khẩu")
+                        Toast.makeText(this@LoginActivity, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e("LoginActivity", "Lỗi server: ${response.code()} - ${response.message()}")
+                        Toast.makeText(this@LoginActivity, "Lỗi từ máy chủ: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<UserDto>, t: Throwable) {
+                    btnLogin.isEnabled = true
+                    Log.e("LoginActivity", "Lỗi kết nối nghiêm trọng", t)
+                    Toast.makeText(this@LoginActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         tvRegister.setOnClickListener {

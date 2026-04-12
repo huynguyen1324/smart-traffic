@@ -1,6 +1,14 @@
 const favouritesService = require('../services/FavouritesService');
 
 class FavouritesController {
+    async check(req, res) {
+        try {
+            const { user_id, type, type_id } = req.query;
+            const data = await favouritesService.check(user_id, type, type_id);
+            res.json(data);
+        } catch (err) { res.status(500).json({ error: err.message }); }
+    }
+
     async getAll(req, res) {
         try {
             const data = await favouritesService.getAll();

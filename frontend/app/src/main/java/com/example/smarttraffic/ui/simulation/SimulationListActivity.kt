@@ -24,6 +24,6 @@ class SimulationListActivity : AppCompatActivity() {
         }
 
         // Standardized Bottom Nav
-        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navSimulation)
+        com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, -1)
     }
 }

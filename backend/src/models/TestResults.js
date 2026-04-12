@@ -1,8 +1,14 @@
 class TestResults {
-    constructor(id, user_id, created_at) {
-        this.id = id;
-        this.user_id = user_id;
-        this.created_at = created_at;
+    constructor(data) {
+        this.id = data.id;
+        this.user_id = data.user_id;
+        this.test_id = data.test_id;
+        this.license = data.license;
+        this.total = data.total;
+        this.correct = data.correct;
+        this.wrong = data.wrong;
+        this.unanswered = data.unanswered;
+        this.created_at = data.created_at;
     }
 }
 module.exports = TestResults;

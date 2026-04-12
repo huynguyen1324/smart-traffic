@@ -83,9 +83,9 @@
             android:textSize="11sp" />
     </LinearLayout>
 
-    <!-- Tình huống -->
+    <!-- Ôn tập -->
     <LinearLayout
-        android:id="@+id/navSimulation"
+        android:id="@+id/navQuiz"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -94,16 +94,16 @@
         android:clickable="true"
         android:focusable="true">
         <ImageView
-            android:id="@+id/ivSimulation"
+            android:id="@+id/ivQuiz"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_simulation"
+            android:src="@drawable/ic_quiz"
             app:tint="#94A3B8" />
         <TextView
-            android:id="@+id/tvSimulation"
+            android:id="@+id/tvQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tình huống"
+            android:text="Ôn tập"
             android:textColor="#94A3B8"
             android:textSize="11sp" />
     </LinearLayout>

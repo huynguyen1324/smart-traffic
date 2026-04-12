@@ -11,20 +11,9 @@ class LawsRepository {
         const [rows] = await pool.query('SELECT * FROM `laws` WHERE id = ?', [id]);
         return rows[0] || null;
     }
-
-    async save(data) {
-        const [result] = await pool.query('INSERT INTO `laws` SET ?', [data]);
-        return result.insertId;
-    }
-
-    async update(id, data) {
-        const [result] = await pool.query('UPDATE `laws` SET ? WHERE id = ?', [data, id]);
-        return result.affectedRows > 0;
-    }
-
-    async delete(id) {
-        const [result] = await pool.query('DELETE FROM `laws` WHERE id = ?', [id]);
-        return result.affectedRows > 0;
+    async findByCategory(categoryId) {
+        const [rows] = await pool.query('SELECT * FROM `laws` WHERE category_id = ?', [categoryId]);
+        return rows;
     }
 }
 module.exports = new LawsRepository();

@@ -8,17 +8,5 @@ class SignsService {
     async getById(id) {
         return await signsRepository.findById(id);
     }
-
-    async create(data) {
-        return await signsRepository.save(data);
-    }
-
-    async update(id, data) {
-        return await signsRepository.update(id, data);
-    }
-
-    async delete(id) {
-        return await signsRepository.delete(id);
-    }
 }
 module.exports = new SignsService();

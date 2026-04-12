@@ -143,6 +143,7 @@ class SignListActivity : AppCompatActivity() {
     }
 
     private fun filterSigns(query: String) {
+        val normalizedQuery = removeAccents(query.lowercase())
         filteredSigns = allSigns
             .let { list ->
                 if (selectedCategoryId == -1) list
@@ -151,10 +152,17 @@ class SignListActivity : AppCompatActivity() {
             .let { list ->
                 if (query.isBlank()) list
                 else list.filter {
-                    it.title?.contains(query, ignoreCase = true) == true ||
-                    it.sign_code?.contains(query, ignoreCase = true) == true
+                    val normalizedTitle = removeAccents(it.title?.lowercase() ?: "")
+                    val normalizedCode = removeAccents(it.sign_code?.lowercase() ?: "")
+                    normalizedTitle.contains(normalizedQuery) || normalizedCode.contains(normalizedQuery)
                 }
             }
         signAdapter.updateData(filteredSigns)
+    }
+
+    private fun removeAccents(src: String): String {
+        val nfdNormalizedString = java.text.Normalizer.normalize(src, java.text.Normalizer.Form.NFD)
+        val pattern = java.util.regex.Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+        return pattern.matcher(nfdNormalizedString).replaceAll("").replace('đ', 'd').replace('Đ', 'D')
     }
 }

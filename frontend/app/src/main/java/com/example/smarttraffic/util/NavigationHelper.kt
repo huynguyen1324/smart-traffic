@@ -9,8 +9,8 @@ import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.home.HomeActivity
 import com.example.smarttraffic.ui.lesson.LawListActivity
 import com.example.smarttraffic.ui.profile.ProfileActivity
+import com.example.smarttraffic.ui.quiz.QuizMenuActivity
 import com.example.smarttraffic.ui.sign.SignListActivity
-import com.example.smarttraffic.ui.simulation.SimulationListActivity
 
 object NavigationHelper {
 
@@ -18,46 +18,36 @@ object NavigationHelper {
         val navHome = activity.findViewById<View>(R.id.navHome)
         val navLaw = activity.findViewById<View>(R.id.navLaw)
         val navSign = activity.findViewById<View>(R.id.navSign)
-        val navSimulation = activity.findViewById<View>(R.id.navSimulation)
+        val navQuiz = activity.findViewById<View>(R.id.navQuiz)
         val navProfile = activity.findViewById<View>(R.id.navProfile)
 
         navHome?.setOnClickListener {
             if (activity !is HomeActivity) {
-                val intent = Intent(activity, HomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                activity.startActivity(intent)
+                navigateTo(activity, HomeActivity::class.java, true)
             }
         }
 
         navLaw?.setOnClickListener {
             if (activity !is LawListActivity) {
-                val intent = Intent(activity, LawListActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                activity.startActivity(intent)
+                navigateTo(activity, LawListActivity::class.java, true)
             }
         }
 
         navSign?.setOnClickListener {
             if (activity !is SignListActivity) {
-                val intent = Intent(activity, SignListActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                activity.startActivity(intent)
+                navigateTo(activity, SignListActivity::class.java, true)
             }
         }
 
-        navSimulation?.setOnClickListener {
-            if (activity !is SimulationListActivity) {
-                val intent = Intent(activity, SimulationListActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                activity.startActivity(intent)
+        navQuiz?.setOnClickListener {
+            if (activity !is QuizMenuActivity) {
+                navigateTo(activity, QuizMenuActivity::class.java, true)
             }
         }
 
         navProfile?.setOnClickListener {
             if (activity !is ProfileActivity) {
-                val intent = Intent(activity, ProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                activity.startActivity(intent)
+                navigateTo(activity, ProfileActivity::class.java, true)
             }
         }
 
@@ -67,7 +57,7 @@ object NavigationHelper {
             R.id.navHome -> setActive(activity, R.id.ivHome, R.id.tvHome, activeColor)
             R.id.navLaw -> setActive(activity, R.id.ivLaw, R.id.tvLaw, activeColor)
             R.id.navSign -> setActive(activity, R.id.ivSign, R.id.tvSign, activeColor)
-            R.id.navSimulation -> setActive(activity, R.id.ivSimulation, R.id.tvSimulation, activeColor)
+            R.id.navQuiz -> setActive(activity, R.id.ivQuiz, R.id.tvQuiz, activeColor)
             R.id.navProfile -> setActive(activity, R.id.ivProfile, R.id.tvProfile, activeColor)
         }
     }
@@ -86,6 +76,5 @@ object NavigationHelper {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         activity.startActivity(intent)
-        if (clearTop) activity.finish()
     }
 }
