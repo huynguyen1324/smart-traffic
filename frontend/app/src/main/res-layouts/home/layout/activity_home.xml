@@ -380,7 +380,7 @@
                             android:fontFamily="sans-serif-medium"
                             android:lines="1"
                             android:ellipsize="end"
-                            android:text="Chatbot hỏi đáp"
+                            android:text="Chatbot"
                             android:textColor="#0F172A"
                             android:textSize="15sp" />
                     </LinearLayout>

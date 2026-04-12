@@ -24,7 +24,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_traffic_logo"
+            android:src="@drawable/ic_app_new_logo"
             android:contentDescription="Logo giao thông" />
     </com.google.android.material.card.MaterialCardView>
 

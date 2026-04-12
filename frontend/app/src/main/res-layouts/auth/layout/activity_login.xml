@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giao Thông"
-                    android:textColor="#22C1E8"
+                    android:textColor="#5FD3EE"
                     android:textSize="28sp"
                     android:textStyle="bold" />
             </LinearLayout>
