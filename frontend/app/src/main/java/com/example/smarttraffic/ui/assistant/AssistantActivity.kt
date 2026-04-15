@@ -95,8 +95,13 @@ class AssistantActivity : AppCompatActivity() {
         recyclerViewChat.adapter = chatAdapter
 
         // Initial messages
-        messages.add(ChatMessage("Xin chào! Tôi là trợ lý AI của bạn. Tôi có thể giúp gì cho bạn hôm nay?", isUser = false))
-        messages.add(ChatMessage("", isUser = false, isSuggestion = true))
+        messages.add(ChatMessage("Xin chào! Tôi là trợ lý AI của bạn. Tôi có thể giúp bạn tra cứu luật, biển báo, luyện thi và tìm địa điểm thi. Bạn muốn bắt đầu từ đâu?", isUser = false))
+        messages.add(ChatMessage("", isUser = false, isSuggestion = true, suggestions = listOf(
+            "Luật nồng độ cồn mới nhất",
+            "Mẹo thi bằng lái xe A1",
+            "Tra cứu biển báo cấm ô tô",
+            "Tìm trung tâm sát hạch gần đây"
+        )))
         chatAdapter.notifyItemRangeInserted(0, 2)
 
         val btnSend = findViewById<MaterialButton>(R.id.btnSend)
@@ -147,6 +152,7 @@ class AssistantActivity : AppCompatActivity() {
     }
 
     private fun handleSendMessage(text: String, imageUri: Uri? = null) {
+        findViewById<MaterialButton>(R.id.btnSend).isEnabled = false
         hideKeyboard() // Hạ bàn phím ngay lập tức
         
         // Add User Message
@@ -206,8 +212,19 @@ class AssistantActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val responseBody = response.body()!!.string()
-                        val jsonObj = org.json.JSONObject(responseBody)
-                        val reply = jsonObj.optString("reply", "Không có phản hồi từ AI.")
+                        
+                        // Trích xuất JSON an toàn (Đề phòng AI trả về text thừa)
+                        val start = responseBody.indexOf("{")
+                        val end = responseBody.lastIndexOf("}")
+                        val jsonStr = if (start != -1 && end != -1) responseBody.substring(start, end + 1) else responseBody
+                        
+                        val jsonObj = org.json.JSONObject(jsonStr)
+                        val replyRaw = jsonObj.optString("reply", "")
+                        val reply = replyRaw.trim().ifEmpty {
+                            jsonObj.optString("message", "").trim().ifEmpty {
+                                "Không có phản hồi từ AI."
+                            }
+                        }
                         val command = jsonObj.optString("command", null)
                         val params = jsonObj.optJSONObject("params")
 
@@ -234,9 +251,15 @@ class AssistantActivity : AppCompatActivity() {
                     messages.add(ChatMessage(errorMsg, isUser = false))
                     chatAdapter.notifyItemInserted(messages.size - 1)
                 }
+                
+                // Re-enable send button
+                findViewById<MaterialButton>(R.id.btnSend).isEnabled = true
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // Re-enable send button
+                findViewById<MaterialButton>(R.id.btnSend).isEnabled = true
+                
                 messages.removeAt(typingPosition)
                 chatAdapter.notifyItemRemoved(typingPosition)
                 messages.add(ChatMessage("Lỗi kết nối: ${t.message}", isUser = false))
@@ -247,7 +270,11 @@ class AssistantActivity : AppCompatActivity() {
 
     private fun handleAICommand(command: String?, params: org.json.JSONObject?) {
         val safeCommand = command?.trim()?.uppercase()
+        
         if (safeCommand.isNullOrEmpty() || safeCommand == "NULL") return
+
+        // android.widget.Toast.makeText(this, "Lệnh nhận được: $safeCommand", android.widget.Toast.LENGTH_SHORT).show()
+        
 
         when (safeCommand) {
             "OPEN_LAWS" -> {
@@ -264,6 +291,36 @@ class AssistantActivity : AppCompatActivity() {
             }
             "OPEN_PROGRESS" -> {
                 startActivity(android.content.Intent(this, com.example.smarttraffic.ui.progress.ProgressActivity::class.java))
+            }
+            "OPEN_MAP" -> {
+                android.widget.Toast.makeText(this, "Đang mở bản đồ...", android.widget.Toast.LENGTH_SHORT).show()
+                recyclerViewChat.postDelayed({
+                    startActivity(android.content.Intent(this, com.example.smarttraffic.ui.map.MapActivity::class.java))
+                }, 300)
+            }
+            "OPEN_PROFILE" -> {
+                recyclerViewChat.postDelayed({
+                    startActivity(android.content.Intent(this, com.example.smarttraffic.ui.profile.ProfileActivity::class.java))
+                }, 300)
+            }
+            "OPEN_SIMULATION" -> {
+                recyclerViewChat.postDelayed({
+                    startActivity(android.content.Intent(this, com.example.smarttraffic.ui.simulation.SimulationListActivity::class.java))
+                }, 300)
+            }
+            "SEARCH_LAW" -> {
+                val keyword = params?.optString("keyword") ?: ""
+                android.widget.Toast.makeText(this, "Đang tìm luật: $keyword", android.widget.Toast.LENGTH_SHORT).show()
+                recyclerViewChat.postDelayed({
+                    startActivity(android.content.Intent(this, com.example.smarttraffic.ui.lesson.LawListActivity::class.java))
+                }, 300)
+            }
+            "SEARCH_SIGN" -> {
+                val keyword = params?.optString("keyword") ?: ""
+                android.widget.Toast.makeText(this, "Đang tìm biển báo: $keyword", android.widget.Toast.LENGTH_SHORT).show()
+                recyclerViewChat.postDelayed({
+                    startActivity(android.content.Intent(this, com.example.smarttraffic.ui.sign.SignListActivity::class.java))
+                }, 300)
             }
         }
     }

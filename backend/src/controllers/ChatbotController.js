@@ -1,99 +1,109 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const OpenAI = require('openai');
 const userStreaksService = require('../services/UserStreaksService');
+const fs = require('fs');
+const path = require('path');
 
-// 1. Khởi tạo bên ngoài để tránh khởi tạo lại mỗi khi gọi API (tối ưu hiệu năng)
-const apiKey = process.env.GEMINI_API_KEY;
-const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+// 1. Khởi tạo OpenAI (Tương thích OpenRouter)
+const apiKey = process.env.OPENAI_API_KEY;
+const openai = apiKey ? new OpenAI({
+    apiKey,
+    baseURL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
+    defaultHeaders: {
+        "HTTP-Referer": "http://localhost:5000", // Bắt buộc cho OpenRouter
+        "X-Title": "Smart Traffic App",         // Tên app của bạn
+    }
+}) : null;
+
+// Tải System Prompt từ file
+let systemInstructions = "";
+try {
+    const promptPath = path.join(__dirname, '../config/chatbot_prompt.txt');
+    systemInstructions = fs.readFileSync(promptPath, 'utf8');
+} catch (error) {
+    console.error("Lỗi đọc file system prompt:", error);
+    systemInstructions = "Bạn là trợ lý App Giao Thông.";
+}
 
 class ChatbotController {
     async ask(req, res) {
         try {
-            if (!genAI) {
-                return res.status(500).json({ error: 'GEMINI_API_KEY chưa được cấu hình.' });
+            if (!openai) {
+                return res.status(500).json({ error: 'OPENAI_API_KEY chưa được cấu hình.' });
             }
 
             const { message, userId, history } = req.body;
 
-            // 2. Lấy nhanh thông tin tiến độ (nếu có userId)
+            // 2. Lấy thông tin tiến độ người dùng
             let userStats = "";
             if (userId) {
                 try {
                     const streak = await userStreaksService.getStreak(userId);
-                    userStats = `(Người dùng đã học ${streak.current_streak} ngày liên tiếp)`;
+                    userStats = `\nThông tin người dùng: Đã học ${streak.current_streak} ngày liên tiếp.`;
                 } catch (e) { }
             }
 
-            // 3. System Prompt: Tối giản & Phân loại Ý định
-            const systemInstructions = `Bạn là trợ lý điều hướng App Giao Thông. 
-            Trả về JSON: {"reply": "...", "command": "...", "params": {}}
-            
-            QUY TẮC ĐIỀU HƯỚNG (Nghiêm ngặt):
-            1. CHỈ dùng command khi User muốn HÀNH ĐỘNG: "vào", "mở", "thi", "làm", "xem", "học".
-            2. Nếu User đang hỏi KIẾN THỨC, NHẬN XÉT (ví dụ: "đề có 25 câu", "biển có 3 loại") -> Tuyệt đối để command: null.
-            QUY TẮC PHẢN HỒI (Bắt buộc):
-            1. Luôn ưu tiên trả lời nội dung người dùng hỏi trước.
-            2. Kiểm tra xem User có đồng ý (có, ok, được, ừ...) với gợi ý trước đó không.
-            3. Ánh xạ lệnh theo BẢNG sau:
-               - Biển báo, Sign -> "OPEN_SIGNS"
-               - Tiến độ, Thành tích, Streak -> "OPEN_PROGRESS"
-               - Luật, Nghị định, Văn bản -> "OPEN_LAWS"
-               - Thi thử, Đề thi, Test -> "OPEN_TESTS"
-               - Quiz, Luyện tập, Đố vui -> "OPEN_QUIZ"
-            
-            Nếu User đồng ý với gợi ý về [Chủ đề], bạn PHẢI điền đúng [Mã lệnh] vào trường "command".
-            
-            Thông tin người dùng: ${userStats}`;
+            const fullPrompt = systemInstructions + userStats;
 
-            const modelName = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite-preview";
-            const model = genAI.getGenerativeModel({ 
-                model: modelName,
-                systemInstruction: systemInstructions,
-                generationConfig: { responseMimeType: "application/json" }
-            });
+            const modelName = process.env.OPENAI_MODEL || "gpt-4o-mini";
+            console.log(`[AI] Sử dụng OpenAI mô hình: ${modelName}`);
 
-            // 4. Xây dựng nội dung gửi đi bao gồm lịch sử (tối đa 5 câu gần nhất)
+            // 4. Xây dựng nội dung gửi đi (Messages)
+            const apiMessages = [
+                { role: "system", content: fullPrompt }
+            ];
+
+            // Thêm lịch sử (5 câu gần nhất)
             let historyArray = [];
             try {
                 historyArray = typeof history === 'string' ? JSON.parse(history) : (history || []);
-            } catch (e) {
-                historyArray = [];
-            }
-            
-            let promptContext = `LỊCH SỬ TRÒ CHUYỆN:\n`;
-            if (historyArray && historyArray.length > 0) {
-                historyArray.forEach(msg => {
-                    promptContext += `${msg.isUser ? "User" : "Bot"}: ${msg.text}\n`;
+            } catch (e) { }
+
+            historyArray.slice(-5).forEach(msg => {
+                apiMessages.push({
+                    role: msg.isUser ? "user" : "assistant",
+                    content: msg.text
                 });
-            }
-            promptContext += `User: ${message}\nBot: `;
+            });
 
-            const reqParts = [promptContext];
+            // Tin nhắn hiện tại (Xử lý văn bản + Ảnh)
+            const currentUserContent = [{ type: "text", text: message || "Phân tích nội dung này" }];
 
-            // 5. Xử lý ảnh (nếu có)
             if (req.file) {
-                reqParts.push({
-                    inlineData: {
-                        data: req.file.buffer.toString("base64"),
-                        mimeType: req.file.mimetype
-                    },
+                const base64Image = req.file.buffer.toString("base64");
+                currentUserContent.push({
+                    type: "image_url",
+                    image_url: {
+                        url: `data:${req.file.mimetype};base64,${base64Image}`
+                    }
                 });
             }
 
-            // 6. Gọi AI và xử lý kết quả
-            const result = await model.generateContent(reqParts);
-            const response = await result.response;
-            const text = response.text();
+            apiMessages.push({ role: "user", content: currentUserContent });
+
+            // 5. Gọi OpenAI API
+            const completion = await openai.chat.completions.create({
+                model: modelName,
+                messages: apiMessages,
+                response_format: { type: "json_object" },
+            });
+
+            const text = completion.choices[0].message.content;
 
             try {
                 const jsonObj = JSON.parse(text);
+                const fallback =
+                    "Xin lỗi, tôi chưa tạo được nội dung phản hồi. Bạn hỏi lại hoặc thử một câu ngắn hơn nhé.";
+                if (typeof jsonObj.reply !== "string" || !jsonObj.reply.trim()) {
+                    jsonObj.reply = fallback;
+                }
                 res.json(jsonObj);
             } catch (e) {
-                console.error("JSON Parse Error on AI output:", text);
+                console.error("OpenAI JSON Parse Error:", text);
                 res.json({ reply: text, command: null });
             }
 
         } catch (error) {
-            console.error("Chatbot Generate Error:", error);
+            console.error("OpenAI Chatbot Error:", error);
 
             if (error.status === 429 || error.message.includes("429")) {
                 return res.status(429).json({
@@ -101,7 +111,7 @@ class ChatbotController {
                 });
             }
 
-            res.status(500).json({ error: 'Lỗi khi gọi AI: ' + error.message });
+            res.status(500).json({ error: 'Lỗi OpenAI: ' + error.message });
         }
     }
 }

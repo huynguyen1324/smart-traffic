@@ -126,23 +126,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFavorite"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="40dp"
-                android:text="Thêm vào yêu thích"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="16dp"
-                app:backgroundTint="#F8FAFC"
-                app:strokeColor="#CBD5E1"
-                app:strokeWidth="1.5dp"
-                android:textColor="#334155"
-                app:icon="@android:drawable/btn_star_big_off"
-                app:iconTint="#64748B"
-                app:iconGravity="textStart" />
+
 
         </LinearLayout>
     </ScrollView>

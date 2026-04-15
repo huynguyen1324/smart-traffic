@@ -20,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class QuizCategoryActivity : AppCompatActivity() {
+class                   QuizCategoryActivity : AppCompatActivity() {
 
     private lateinit var rvCategories: RecyclerView
     private var type: String = "Law"

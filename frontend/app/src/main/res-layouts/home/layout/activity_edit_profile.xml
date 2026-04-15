@@ -59,15 +59,6 @@
                         android:scaleType="centerCrop"
                         android:src="@android:color/darker_gray" />
                 </com.google.android.material.card.MaterialCardView>
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    app:fabSize="mini"
-                    android:src="@android:drawable/ic_menu_camera"
-                    app:tint="@android:color/white"
-                    app:backgroundTint="#22C1E8"/>
             </RelativeLayout>
 
             <!-- Name -->

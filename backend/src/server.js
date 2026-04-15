@@ -5,7 +5,6 @@ const pool = require('./config/db');
 
 const a1250QuestionsRoutes = require('./routes/A1250QuestionsRoutes');
 const b2600QuestionsRoutes = require('./routes/B2600QuestionsRoutes');
-const favouritesRoutes = require('./routes/FavouritesRoutes');
 const lawCategoriesRoutes = require('./routes/LawCategoriesRoutes');
 const lawsRoutes = require('./routes/LawsRoutes');
 const signCategoriesRoutes = require('./routes/SignCategoriesRoutes');
@@ -24,7 +23,6 @@ app.use('/images', express.static('public/images'));
 // Routes
 app.use('/api/a1-250-questions', a1250QuestionsRoutes);
 app.use('/api/b2-600-questions', b2600QuestionsRoutes);
-app.use('/api/favourites', favouritesRoutes);
 app.use('/api/law-categories', lawCategoriesRoutes);
 app.use('/api/laws', lawsRoutes);
 app.use('/api/sign-categories', signCategoriesRoutes);

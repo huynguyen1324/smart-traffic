@@ -5,6 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.LinearLayout
+import android.view.Gravity
+import android.graphics.Color
+import android.content.res.ColorStateList
 import com.example.smarttraffic.R
 import com.google.android.material.button.MaterialButton
 
@@ -50,7 +54,7 @@ class ChatAdapter(
         when (holder) {
             is UserViewHolder -> holder.bind(message)
             is BotViewHolder -> holder.bind(message)
-            is SuggestionViewHolder -> holder.bind()
+            is SuggestionViewHolder -> holder.bind(message)
         }
     }
 
@@ -87,12 +91,37 @@ class ChatAdapter(
     }
 
     inner class SuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val btnSignAsk: MaterialButton = itemView.findViewById(R.id.btnSignAsk)
-        private val btnTurnRight: MaterialButton = itemView.findViewById(R.id.btnTurnRight)
+        private val container: ViewGroup = itemView.findViewById(R.id.suggestionsContainer)
 
-        fun bind() {
-            btnSignAsk.setOnClickListener { onSuggestionClick("Giải thích ý nghĩa biển báo cấm") }
-            btnTurnRight.setOnClickListener { onSuggestionClick("Thế nào là rẽ phải đúng luật?") }
+        fun bind(message: ChatMessage) {
+            container.removeAllViews()
+            
+            val suggestionList = message.suggestions ?: listOf(
+                "Giải thích ý nghĩa biển báo cấm",
+                "Thế nào là rẽ phải đúng luật?"
+            )
+
+            for (text in suggestionList) {
+                val button = MaterialButton(itemView.context, null, com.google.android.material.R.attr.materialButtonOutlinedStyle)
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    (52 * itemView.context.resources.displayMetrics.density).toInt()
+                )
+                params.setMargins(0, 0, 0, (8 * itemView.context.resources.displayMetrics.density).toInt())
+                button.layoutParams = params
+                button.text = text
+                button.isAllCaps = false
+                button.cornerRadius = (16 * itemView.context.resources.displayMetrics.density).toInt()
+                button.setPadding((16 * itemView.context.resources.displayMetrics.density).toInt(), 0, 0, 0)
+                button.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                button.setTextColor(Color.parseColor("#0369A1"))
+                button.strokeColor = ColorStateList.valueOf(Color.parseColor("#22C1E8"))
+                button.strokeWidth = (1.5 * itemView.context.resources.displayMetrics.density).toInt()
+                button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F0F9FF"))
+                
+                button.setOnClickListener { onSuggestionClick(text) }
+                container.addView(button)
+            }
         }
     }
 }

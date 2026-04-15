@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">smart traffic</string>
+    <string name="map_search_hint">Tìm địa điểm sát hạch</string>
+    <string name="map_search_no_result">Không tìm thấy địa điểm phù hợp</string>
 </resources>

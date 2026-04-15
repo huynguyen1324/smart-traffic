@@ -14,7 +14,7 @@ import com.example.smarttraffic.dto.UserDto
 import com.example.smarttraffic.network.RegisterResponse
 import com.example.smarttraffic.network.RetrofitClient
 import com.example.smarttraffic.network.UserApiService
-import com.example.smarttraffic.ui.profile.ProfileSetupActivity
+import com.example.smarttraffic.ui.home.HomeActivity
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,8 +44,18 @@ class RegisterActivity : AppCompatActivity() {
             val password = edtPassword.text.toString().trim()
             val confirm = edtConfirm.text.toString().trim()
             
-            val gender = if (findViewById<RadioButton>(R.id.rbMale).isChecked) "male" else "female"
-            val defaultAvatar = if (gender == "male") "default-male.png" else "default-female.png"
+            val gender = when {
+                findViewById<RadioButton>(R.id.rbMale).isChecked -> "Nam"
+                findViewById<RadioButton>(R.id.rbFemale).isChecked -> "Nữ"
+                else -> "Khác"
+            }
+            val learningGoal = if (findViewById<RadioButton>(R.id.rbA1).isChecked) "A1" else "B2"
+            
+            val defaultAvatar = when (gender) {
+                "Nam" -> "default-male.png"
+                "Nữ" -> "default-female.png"
+                else -> "default-other.png"
+            }
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập họ tên", Toast.LENGTH_SHORT).show()
@@ -73,6 +83,7 @@ class RegisterActivity : AppCompatActivity() {
                 phone = if (phone.isNotEmpty()) phone else null,
                 password = password,
                 gender = gender,
+                learning_goal = learningGoal,
                 avatar_url = defaultAvatar
             )
             val apiService = RetrofitClient.retrofit.create(UserApiService::class.java)
@@ -89,12 +100,11 @@ class RegisterActivity : AppCompatActivity() {
                             .putInt("USER_ID", userId)
                             .putString("USER_NAME", name)
                             .putString("USER_AVATAR", defaultAvatar)
+                            .putString("LEARNING_GOAL", learningGoal)
                             .apply()
                         
-                        // Pass userId to profile setup screen
-                        val intent = Intent(this@RegisterActivity, ProfileSetupActivity::class.java)
-                        intent.putExtra("USER_ID", userId)
-                        intent.putExtra("USER_NAME", name)
+                        // Direct navigation to Home screen
+                        val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

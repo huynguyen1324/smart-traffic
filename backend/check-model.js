@@ -1,27 +1,43 @@
-const API_KEY = "AIzaSyDawuq5jhucIS_wKP0OBUHdBv7LdxEbSNA";
+require('dotenv').config();
+const OpenAI = require('openai');
+
+const apiKey = process.env.OPENAI_API_KEY;
+
+if (!apiKey || apiKey.startsWith('AIzaSy')) {
+  console.error("❌ Lỗi: Bạn chưa cấu hình OPENAI_API_KEY hợp lệ trong file .env");
+  console.error("Vui lòng thay thế Key Gemini cũ bằng OpenAI API Key.");
+  process.exit(1);
+}
+
+const openai = new OpenAI({ 
+    apiKey,
+    baseURL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1"
+});
 
 async function listModels() {
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`
-    );
-    const data = await response.json();
+    const response = await openai.models.list();
+    
+    console.log("\n--- CÁC MÔ HÌNH OPENAI KHẢ DỤNG ---");
+    
+    // Lọc ra các dòng GPT chính để dễ nhìn
+    const models = response.data
+      .map(m => m.id)
+      .filter(id => id.includes("gpt") && !id.includes("vision") && !id.includes("instruct"))
+      .sort();
 
-    if (data.error) {
-      console.error("Lỗi API:", data.error.message);
-      return;
-    }
-
-    console.log("--- CÁC MÔ HÌNH BẠN CÓ THỂ SỬ DỤNG ---");
-    data.models.forEach((model) => {
-      // Chỉ lọc ra các mô hình hỗ trợ tạo nội dung (generateContent)
-      if (model.supportedGenerationMethods.includes("generateContent")) {
-        console.log(`Model ID: ${model.name.replace("models/", "")}`);
-      }
+    models.forEach((id) => {
+      console.log(`- ${id}`);
     });
-    console.log("---------------------------------------");
+    
+    console.log("----------------------------------\n");
+    console.log("Gợi ý: Bạn nên sử dụng 'gpt-4o-mini' để có tốc độ nhanh và chi phí thấp nhất.");
   } catch (error) {
-    console.error("Lỗi kết nối:", error);
+    if (error.status === 401) {
+      console.error("❌ Lỗi 401: API Key không chính xác hoặc đã hết hạn.");
+    } else {
+      console.error("❌ Lỗi kết nối OpenAI:", error.message);
+    }
   }
 }
 

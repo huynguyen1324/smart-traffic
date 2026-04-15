@@ -25,20 +25,19 @@
 
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="false">
-        </activity>
-
-        <activity android:name=".ui.onboarding.Onboarding2Activity" />
-        <activity android:name=".ui.onboarding.Onboarding1Activity" />
-        <activity android:name=".ui.onboarding.Onboarding3Activity" />
-        <activity android:name=".ui.auth.LoginActivity" android:exported="true">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.onboarding.Onboarding2Activity" />
+        <activity android:name=".ui.onboarding.Onboarding1Activity" />
+        <activity android:name=".ui.onboarding.Onboarding3Activity" />
+        <activity android:name=".ui.auth.LoginActivity" android:exported="false" />
         <activity android:name=".ui.auth.RegisterActivity"/>
-        <activity android:name=".ui.profile.ProfileSetupActivity" android:exported="false" />
+
         <activity android:name=".ui.profile.EditProfileActivity" android:exported="false" />
         <activity android:name=".ui.home.HomeActivity"/>
         <activity android:name=".ui.lesson.LawListActivity"/>

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smarttraffic.R
 import com.example.smarttraffic.dto.UserDto
@@ -74,6 +75,15 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
+        tvForgotPassword.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Quên mật khẩu")
+                .setMessage("Vui lòng liên hệ quản trị viên để lấy lại mật khẩu. SĐT / Zalo: 0382970723")
+                .setPositiveButton("Đóng", null)
+                .show()
         }
 
         tvRegister.setOnClickListener {
