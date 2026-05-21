@@ -9,17 +9,23 @@ class QuizRepository {
     }
 
     async findTestList(license) {
-        const table = (license || "").toLowerCase() === "a1" ? "a1_tests" : "b2_tests";
-        const [rows] = await pool.query(`SELECT * FROM ${table} ORDER BY id ASC`);
+        const table = this.getQuestionTable(license);
+        const [rows] = await pool.query(`
+            SELECT test_number AS id, CONCAT('Đề số ', test_number) AS name, COUNT(*) AS total
+            FROM ${table}
+            WHERE test_number IS NOT NULL AND test_number != 0
+            GROUP BY test_number
+            ORDER BY test_number ASC
+        `);
         return rows;
     }
 
     async findQuestionsByTest(license, test_id) {
         const table = this.getQuestionTable(license);
         const [rows] = await pool.query(`
-            SELECT id, type, type_category_id, test_id, image_url, description_text, 
+            SELECT id, type, type_category_id, test_number AS test_id, image_url, description_text, 
                    option_a, option_b, option_c, option_d, correct_option, explanation
-            FROM ${table} WHERE test_id = ? ORDER BY id ASC
+            FROM ${table} WHERE test_number = ? ORDER BY id ASC
         `, [test_id]);
         return rows;
     }

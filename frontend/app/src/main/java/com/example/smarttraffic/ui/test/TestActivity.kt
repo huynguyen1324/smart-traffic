@@ -3,6 +3,7 @@ package com.example.smarttraffic.ui.test
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.util.Log
 import android.widget.*
 import java.util.Locale
 import androidx.appcompat.app.AlertDialog
@@ -134,7 +135,8 @@ class TestActivity : AppCompatActivity() {
 
         if (!q.image_url.isNullOrEmpty()) {
             cardImage.visibility = View.VISIBLE
-            val fullUrl = com.example.smarttraffic.network.RetrofitClient.IMAGE_URL_BASE + q.image_url
+            val fullUrl = com.example.smarttraffic.network.RetrofitClient.getFullImageUrl(q.image_url)
+            Log.d("TestActivity", "Image URL: $fullUrl")
             Glide.with(this).load(fullUrl).into(imgQuestion)
         } else {
             cardImage.visibility = View.GONE

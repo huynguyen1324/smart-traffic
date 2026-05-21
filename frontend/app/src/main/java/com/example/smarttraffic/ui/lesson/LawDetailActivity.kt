@@ -2,6 +2,7 @@ package com.example.smarttraffic.ui.lesson
 
 import android.os.Bundle
 import android.view.View
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -62,8 +63,35 @@ class LawDetailActivity : AppCompatActivity() {
         if (!law.image_url.isNullOrBlank()) {
             cardLawImage.visibility = View.VISIBLE
             
+            val fullImageUrl = RetrofitClient.getFullImageUrl(law.image_url)
+            Log.d("LawDetailActivity", "Image URL: $fullImageUrl")
+
             Glide.with(this)
-                .load(RetrofitClient.IMAGE_URL_BASE + law.image_url)
+                .load(fullImageUrl)
+                .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("LawDetailActivity", "Glide load failed for $fullImageUrl", e)
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: android.graphics.drawable.Drawable?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.d("LawDetailActivity", "Glide load success for $fullImageUrl")
+                        return false
+                    }
+                })
                 .placeholder(R.drawable.ic_loading_placeholder)
                 .error(R.drawable.ic_loading_placeholder)
                 .into(ivLawImage)

@@ -2,8 +2,8 @@ const usersService = require('../services/UsersService');
 
 class UsersController {
     async login(req, res) {
+        const { identifier, password } = req.body || {};
         try {
-            const { identifier, password } = req.body;
             console.log(`Attempting login for: ${identifier}`);
             const user = await usersService.login(identifier, password);
             if (!user) {
@@ -13,7 +13,7 @@ class UsersController {
             console.log(`Login successful for: ${identifier}`);
             res.json(user);
         } catch (err) { 
-            console.error(`Login error for ${identifier}:`, err.message);
+            console.error(`Login error for ${identifier}:`, err.stack || err.message);
             res.status(500).json({ error: err.message }); 
         }
     }

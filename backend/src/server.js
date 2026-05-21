@@ -14,6 +14,7 @@ const usersRoutes = require('./routes/UsersRoutes');
 const userStreaksRoutes = require('./routes/UserStreaksRoutes');
 const quizRoutes = require('./routes/QuizRoutes');
 const chatbotRoutes = require('./routes/ChatbotRoutes');
+const drivingTestCentersRoutes = require('./routes/DrivingTestCentersRoutes');
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/streaks', userStreaksRoutes);
 app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/driving-test-centers', drivingTestCentersRoutes);
 
 app.get('/', (req, res) => res.json({ message: 'Smart Traffic API - Spring Boot Architecture' }));
 

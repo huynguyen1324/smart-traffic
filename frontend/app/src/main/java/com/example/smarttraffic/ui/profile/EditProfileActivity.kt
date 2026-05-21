@@ -92,7 +92,7 @@ class EditProfileActivity : AppCompatActivity() {
                     }
 
                     // Avatar
-                    val avatarUrl = RetrofitClient.IMAGE_URL_BASE + "user_avatars/" + (user.avatar_url ?: "default-male.png")
+                    val avatarUrl = RetrofitClient.getFullImageUrl("images/user_avatars/" + (user.avatar_url ?: "default-male.png"))
                     Glide.with(this@EditProfileActivity)
                         .load(avatarUrl)
                         .circleCrop()

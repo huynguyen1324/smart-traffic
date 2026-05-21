@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.maps)
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

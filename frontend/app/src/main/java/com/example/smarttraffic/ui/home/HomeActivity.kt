@@ -111,7 +111,7 @@ class HomeActivity : AppCompatActivity() {
 
                     // Hiển thị avatar
                     val ivAvatar = findViewById<ImageView>(R.id.ivAvatar)
-                    val avatarUrl = RetrofitClient.IMAGE_URL_BASE + "user_avatars/" + (user.avatar_url ?: "default-male.png")
+                    val avatarUrl = RetrofitClient.getFullImageUrl("images/user_avatars/" + (user.avatar_url ?: "default-male.png"))
                     Glide.with(this@HomeActivity)
                         .load(avatarUrl)
                         .placeholder(R.drawable.ic_loading_placeholder)

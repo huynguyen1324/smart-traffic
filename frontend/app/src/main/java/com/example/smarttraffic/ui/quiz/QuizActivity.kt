@@ -2,6 +2,7 @@ package com.example.smarttraffic.ui.quiz
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -146,8 +147,12 @@ class QuizActivity : AppCompatActivity() {
 
         if (!q.image_url.isNullOrEmpty()) {
             cardImage.visibility = View.VISIBLE
+            
+            val fullImageUrl = RetrofitClient.getFullImageUrl(q.image_url)
+            Log.d("QuizActivity", "Image URL: $fullImageUrl")
+
             Glide.with(this)
-                .load(RetrofitClient.IMAGE_URL_BASE + q.image_url)
+                .load(fullImageUrl)
                 .into(imgQuestion)
         } else {
             cardImage.visibility = View.GONE

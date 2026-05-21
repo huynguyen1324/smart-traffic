@@ -48,7 +48,7 @@ class SignDetailActivity : AppCompatActivity() {
                         tvSignDescription.text = sign.description ?: ""
 
                         Glide.with(this@SignDetailActivity)
-                            .load(RetrofitClient.IMAGE_URL_BASE + (sign.image_url ?: ""))
+                            .load(RetrofitClient.getFullImageUrl(sign.image_url))
                             .placeholder(R.drawable.ic_loading_placeholder)
                             .error(R.drawable.ic_loading_placeholder)
                             .into(imgSign)

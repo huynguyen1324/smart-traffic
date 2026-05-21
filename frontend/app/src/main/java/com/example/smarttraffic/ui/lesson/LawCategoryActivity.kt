@@ -86,8 +86,11 @@ class LawCategoryActivity : AppCompatActivity() {
                 if (!law.image_url.isNullOrBlank()) {
                     holder.cardThumb.visibility = View.VISIBLE
                     
+                    val fullImageUrl = RetrofitClient.getFullImageUrl(law.image_url)
+                    Log.d("LawCategoryActivity", "Image URL: $fullImageUrl")
+
                     Glide.with(this@LawCategoryActivity)
-                        .load(RetrofitClient.IMAGE_URL_BASE + law.image_url)
+                        .load(fullImageUrl)
                         .placeholder(R.drawable.ic_loading_placeholder)
                         .error(R.drawable.ic_loading_placeholder)
                         .centerCrop()

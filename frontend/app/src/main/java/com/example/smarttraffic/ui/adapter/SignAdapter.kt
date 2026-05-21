@@ -35,7 +35,7 @@ class SignAdapter(
         holder.tvCode.text = sign.sign_code
         
         // Tải ảnh từ Server bằng Glide
-        val fullImageUrl = imageUrlFullBase + sign.image_url
+        val fullImageUrl = com.example.smarttraffic.network.RetrofitClient.getFullImageUrl(sign.image_url)
         
         Glide.with(holder.itemView.context)
             .load(fullImageUrl)

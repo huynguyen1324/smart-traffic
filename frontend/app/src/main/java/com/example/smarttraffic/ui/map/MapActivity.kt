@@ -19,6 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smarttraffic.R
+import com.example.smarttraffic.dto.DrivingTestCenterDto
+import com.example.smarttraffic.network.MapApiService
+import com.example.smarttraffic.network.RetrofitClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,6 +29,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.Normalizer
 import java.util.Locale
 
@@ -34,13 +40,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private val hanoi = LatLng(21.0285, 105.8542)
 
-    private val centers = listOf(
-        Center("TT sát hạch Việt Thanh", LatLng(20.942, 106.013), "Văn Lâm, Hưng Yên"),
-        Center("TT sát hạch Đông Đô", LatLng(20.986, 106.176), "Lâm Thao, Bắc Ninh"),
-        Center("TT sát hạch Á Châu", LatLng(20.989, 105.964), "Văn Lâm, Hưng Yên"),
-        Center("TT sát hạch Sóc Sơn", LatLng(21.234, 105.868), "Sóc Sơn, Hà Nội"),
-        Center("TT sát hạch Hà An", LatLng(21.247, 105.751), "Xã Minh Trí, Sóc Sơn, Hà Nội")
-    )
+    private var centers = listOf<Center>()
 
     private lateinit var edtSearch: TextInputEditText
     private lateinit var recyclerSearch: RecyclerView
@@ -77,7 +77,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         edtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val first = filterCenters(edtSearch.text?.toString().orEmpty()).firstOrNull()
+                val query = edtSearch.text?.toString().orEmpty()
+                val first = filterCenters(query).firstOrNull()
                 if (first != null) {
                     hideKeyboard()
                     showCenterDetails(first)
@@ -86,8 +87,51 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             } else false
         }
 
+        loadCenters()
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    private fun loadCenters() {
+        val mapApi = RetrofitClient.retrofit.create(MapApiService::class.java)
+        mapApi.getDrivingTestCenters().enqueue(object : Callback<List<DrivingTestCenterDto>> {
+            override fun onResponse(
+                call: Call<List<DrivingTestCenterDto>>,
+                response: Response<List<DrivingTestCenterDto>>
+            ) {
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        centers = list.map { dto ->
+                            Center(
+                                id = dto.id,
+                                name = dto.name,
+                                pos = LatLng(dto.latitude, dto.longitude),
+                                addr = dto.address
+                            )
+                        }
+                        if (::mMap.isInitialized) {
+                            runOnUiThread {
+                                mMap.clear()
+                                centers.forEach { center ->
+                                    mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(center.pos)
+                                            .title(center.name)
+                                            .snippet(center.addr)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<DrivingTestCenterDto>>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
     }
 
     private fun updateSearchUi(query: String) {
@@ -188,7 +232,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(if (intent.resolveActivity(packageManager) != null) intent else Intent(Intent.ACTION_VIEW, uri))
     }
 
-    data class Center(val name: String, val pos: LatLng, val addr: String)
+    data class Center(val id: Int, val name: String, val pos: LatLng, val addr: String)
 
     private class MapSearchAdapter(
         private val onClick: (Center) -> Unit
