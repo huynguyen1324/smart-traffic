@@ -21,7 +21,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/images', express.static('public/images'));
 
-// Routes
 app.use('/api/a1-250-questions', a1250QuestionsRoutes);
 app.use('/api/b2-600-questions', b2600QuestionsRoutes);
 app.use('/api/law-categories', lawCategoriesRoutes);

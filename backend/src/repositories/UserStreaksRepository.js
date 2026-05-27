@@ -7,7 +7,6 @@ class UserStreaksRepository {
     }
 
     async updateStreak(userId) {
-        // Lấy ngày hiện tại theo múi giờ địa phương (YYYY-MM-DD)
         const now = new Date();
         const today = now.toLocaleDateString('en-CA'); // Trả về dạng YYYY-MM-DD
         
@@ -22,7 +21,6 @@ class UserStreaksRepository {
         }
 
         const streak = rows[0];
-        // Chuyển đổi ngày từ DB sang YYYY-MM-DD để so sánh chính xác
         const lastDate = new Date(streak.last_activity_date).toLocaleDateString('en-CA');
         
         if (lastDate === today) {

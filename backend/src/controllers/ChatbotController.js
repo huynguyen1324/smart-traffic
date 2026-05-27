@@ -3,7 +3,6 @@ const userStreaksService = require('../services/UserStreaksService');
 const fs = require('fs');
 const path = require('path');
 
-// 1. Khởi tạo OpenAI (Tương thích OpenRouter)
 const apiKey = process.env.OPENAI_API_KEY;
 const openai = apiKey ? new OpenAI({
     apiKey,
@@ -14,7 +13,6 @@ const openai = apiKey ? new OpenAI({
     }
 }) : null;
 
-// Tải System Prompt từ file
 let systemInstructions = "";
 try {
     const promptPath = path.join(__dirname, '../config/chatbot_prompt.txt');
@@ -33,7 +31,6 @@ class ChatbotController {
 
             const { message, userId, history } = req.body;
 
-            // 2. Lấy thông tin tiến độ người dùng
             let userStats = "";
             if (userId) {
                 try {
@@ -47,12 +44,10 @@ class ChatbotController {
             const modelName = process.env.OPENAI_MODEL || "gpt-4o-mini";
             console.log(`[AI] Sử dụng OpenAI mô hình: ${modelName}`);
 
-            // 4. Xây dựng nội dung gửi đi (Messages)
             const apiMessages = [
                 { role: "system", content: fullPrompt }
             ];
 
-            // Thêm lịch sử (5 câu gần nhất)
             let historyArray = [];
             try {
                 historyArray = typeof history === 'string' ? JSON.parse(history) : (history || []);
@@ -65,7 +60,6 @@ class ChatbotController {
                 });
             });
 
-            // Tin nhắn hiện tại (Xử lý văn bản + Ảnh)
             const currentUserContent = [{ type: "text", text: message || "Phân tích nội dung này" }];
 
             if (req.file) {
@@ -80,7 +74,6 @@ class ChatbotController {
 
             apiMessages.push({ role: "user", content: currentUserContent });
 
-            // 5. Gọi OpenAI API
             const completion = await openai.chat.completions.create({
                 model: modelName,
                 messages: apiMessages,
