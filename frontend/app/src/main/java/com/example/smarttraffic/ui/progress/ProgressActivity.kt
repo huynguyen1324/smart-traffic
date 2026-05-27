@@ -15,6 +15,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Progress.
+ */
 class ProgressActivity : AppCompatActivity() {
     private lateinit var quizApi: QuizApiService
     private var userId: Int = -1
@@ -30,6 +33,10 @@ class ProgressActivity : AppCompatActivity() {
     private lateinit var tvLongestStreak: TextView
     private lateinit var tvTodayAdvice: TextView
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_progress)
@@ -79,7 +86,6 @@ class ProgressActivity : AppCompatActivity() {
                     val wrongCount = stats.total_done - stats.total_correct
                     tvWrongCount.text = "${if (wrongCount > 0) wrongCount else 0} sai"
 
-                    // Cập nhật lời khuyên sau khi có số liệu thống kê
                     updateAdvice(stats.total_correct, if (wrongCount > 0) wrongCount else 0, getIntFromTextView(tvStreakCount))
                 }
             }
@@ -115,7 +121,6 @@ class ProgressActivity : AppCompatActivity() {
 
                             tvTitle.text = "Đề thi sát hạch ${result.test_id ?: ""}"
                             
-                            // Format date: HH:mm, dd/MM/yyyy
                             val dateStr = result.created_at
                             if (dateStr != null) {
                                 try {

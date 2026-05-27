@@ -16,8 +16,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.widget.ImageView
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của LawDetail.
+ */
 class LawDetailActivity : AppCompatActivity() {
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_law_detail)
@@ -52,12 +59,10 @@ class LawDetailActivity : AppCompatActivity() {
     }
 
     private fun bindData(law: LawDto) {
-        // Header title và subtitle
         findViewById<TextView>(R.id.tvLessonTitle).text = law.category_name ?: "Điều luật"
         findViewById<TextView>(R.id.tvSubTitle).text = law.title ?: "Không có tiêu đề"
         findViewById<TextView>(R.id.tvLawMeta).text = "Nhóm: ${law.category_name ?: "---"}"
 
-        // Ảnh minh họa
         val ivLawImage = findViewById<ImageView>(R.id.ivLawImage)
         val cardLawImage = findViewById<View>(R.id.cardLawImage)
         if (!law.image_url.isNullOrBlank()) {
@@ -99,12 +104,10 @@ class LawDetailActivity : AppCompatActivity() {
             cardLawImage.visibility = View.GONE
         }
 
-        // Mô tả
         val tvContent = findViewById<TextView>(R.id.tvContent)
         tvContent.text = if (!law.description.isNullOrBlank()) law.description.trim()
                         else "Chưa có mô tả."
 
-        // Quy định
         val tvRules = findViewById<TextView>(R.id.tvRules)
         val tvRulesLabel = findViewById<TextView>(R.id.tvRulesLabel)
         val cardRules = findViewById<View>(R.id.cardRules)
@@ -117,7 +120,6 @@ class LawDetailActivity : AppCompatActivity() {
             cardRules.visibility = View.GONE
         }
 
-        // Lưu ý / Cảnh báo
         val tvWarnings = findViewById<TextView>(R.id.tvWarnings)
         val tvWarningsLabel = findViewById<TextView>(R.id.tvWarningsLabel)
         val cardWarnings = findViewById<View>(R.id.cardWarnings)

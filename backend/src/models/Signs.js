@@ -1,3 +1,13 @@
+/**
+ * @file Signs.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của Signs.
+ * @module Backend
+ */
+
+/**
+ * Lớp Signs
+ * Model định nghĩa cấu trúc thực thể dữ liệu của Signs.
+ */
 class Signs {
     constructor(id, category_id, image_url, title, sign_code, description) {
         this.id = id;

@@ -7,7 +7,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,11 +17,13 @@ import com.example.smarttraffic.network.RetrofitClient
 import com.example.smarttraffic.network.UpdateResponse
 import com.example.smarttraffic.network.UserApiService
 import com.example.smarttraffic.ui.auth.LoginActivity
-import com.example.smarttraffic.ui.home.HomeActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của EditProfile.
+ */
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var edtName: EditText
@@ -33,6 +34,10 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var ivAvatar: ImageView
     private var userId: Int = -1
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -74,24 +79,22 @@ class EditProfileActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 if (response.isSuccessful && response.body() != null) {
                     val user = response.body()!!
+
                     edtName.setText(user.full_name)
                     edtEmail.setText(user.email)
                     edtPhone.setText(user.phone)
 
-                    // Gender radio
                     when (user.gender?.lowercase()) {
                         "nam" -> findViewById<RadioButton>(R.id.rbMale).isChecked = true
                         "nữ" -> findViewById<RadioButton>(R.id.rbFemale).isChecked = true
                         else -> findViewById<RadioButton>(R.id.rbOther).isChecked = true
                     }
 
-                    // Goal radio
                     when (user.learning_goal?.uppercase()) {
                         "A1" -> findViewById<RadioButton>(R.id.rbA1).isChecked = true
                         "B2" -> findViewById<RadioButton>(R.id.rbB2).isChecked = true
                     }
 
-                    // Avatar
                     val avatarUrl = RetrofitClient.getFullImageUrl("images/user_avatars/" + (user.avatar_url ?: "default-male.png"))
                     Glide.with(this@EditProfileActivity)
                         .load(avatarUrl)
@@ -99,6 +102,7 @@ class EditProfileActivity : AppCompatActivity() {
                         .into(ivAvatar)
                 }
             }
+
             override fun onFailure(call: Call<UserDto>, t: Throwable) {
                 Toast.makeText(this@EditProfileActivity, "Lỗi tải dữ liệu", Toast.LENGTH_SHORT).show()
             }
@@ -109,13 +113,13 @@ class EditProfileActivity : AppCompatActivity() {
         val name = edtName.text.toString().trim()
         val email = edtEmail.text.toString().trim()
         val phone = edtPhone.text.toString().trim()
-        
+
         val gender = when (rgGender.checkedRadioButtonId) {
             R.id.rbMale -> "Nam"
             R.id.rbFemale -> "Nữ"
             else -> "Khác"
         }
-        
+
         val goal = when (rgGoal.checkedRadioButtonId) {
             R.id.rbA1 -> "A1"
             R.id.rbB2 -> "B2"
@@ -140,19 +144,19 @@ class EditProfileActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@EditProfileActivity, "Đã cập nhật thông tin cá nhân", Toast.LENGTH_SHORT).show()
-                    
-                    // Update Local Storage
+
                     val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
                     sharedPref.edit()
                         .putString("USER_NAME", name)
-                        .putString("LEARNING_GOAL", goal) // Thường dùng cho logic app
+                        .putString("LEARNING_GOAL", goal)
                         .apply()
-                    
+
                     finish()
                 } else {
                     Toast.makeText(this@EditProfileActivity, "Lỗi cập nhật từ máy chủ", Toast.LENGTH_SHORT).show()
                 }
             }
+
             override fun onFailure(call: Call<UpdateResponse>, t: Throwable) {
                 Toast.makeText(this@EditProfileActivity, "Lỗi mạng", Toast.LENGTH_SHORT).show()
             }
@@ -169,16 +173,17 @@ class EditProfileActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@EditProfileActivity, "Đã xoá tài khoản thành công", Toast.LENGTH_LONG).show()
-                            
+
                             val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
                             sharedPref.edit().clear().apply()
-                            
+
                             val intent = Intent(this@EditProfileActivity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                             finish()
                         }
                     }
+
                     override fun onFailure(call: Call<UpdateResponse>, t: Throwable) {
                         Toast.makeText(this@EditProfileActivity, "Lỗi mạng khi xoá", Toast.LENGTH_SHORT).show()
                     }

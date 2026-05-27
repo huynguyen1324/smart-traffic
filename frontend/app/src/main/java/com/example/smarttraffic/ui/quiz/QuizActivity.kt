@@ -23,6 +23,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Quiz.
+ */
 class QuizActivity : AppCompatActivity() {
 
     private var questions: List<QuizQuestionDto> = emptyList()
@@ -53,6 +56,10 @@ class QuizActivity : AppCompatActivity() {
     private var categoryId: Int = -1
     private var categoryName: String = "Luyện tập"
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_detail)
@@ -176,7 +183,6 @@ class QuizActivity : AppCompatActivity() {
             radioGroup.clearCheck()
         }
 
-        // Câu đầu: btnPrev vẫn hiển thị nhưng mờ đi và không nhận sự kiện
         btnPrev.isEnabled = currentIndex > 0
         btnPrev.alpha = if (currentIndex == 0) 0.35f else 1.0f
         btnNext.text = if (currentIndex == questions.size - 1) "Kết thúc" else "Câu sau"
@@ -191,12 +197,10 @@ class QuizActivity : AppCompatActivity() {
             correctCount++
         }
 
-        // LẤY THÔNG TIN USER ĐỂ LƯU DATABASE & TĂNG STREAK
         val sessionManager = com.example.smarttraffic.util.SessionManager(this)
         val userId = sessionManager.userId
         
         if (userId != -1) {
-            // 1. TĂNG STREAK (CHỈ 1 LẦN PER SESSION)
             if (!isStreakTicked) {
                 quizApi.tickStreak(userId).enqueue(object : Callback<com.example.smarttraffic.dto.StreakDto> {
                     override fun onResponse(call: Call<com.example.smarttraffic.dto.StreakDto>, response: Response<com.example.smarttraffic.dto.StreakDto>) {
@@ -206,7 +210,6 @@ class QuizActivity : AppCompatActivity() {
                 })
             }
 
-            // 2. LƯU CHI TIẾT CÂU TRẢ LỜI VÀO DATABASE
             val request = com.example.smarttraffic.dto.QuizDetailSaveRequest(
                 user_id = userId,
                 license = license,
@@ -217,7 +220,6 @@ class QuizActivity : AppCompatActivity() {
             quizApi.saveQuizDetail(request).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        // Toast.makeText(this@QuizActivity, "Lưu vào DB thành công", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@QuizActivity, "Lỗi Server: ${response.code()}", Toast.LENGTH_LONG).show()
                     }

@@ -18,8 +18,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Login.
+ */
 class LoginActivity : AppCompatActivity() {
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -49,14 +56,17 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                     Log.d("LoginActivity", "Phản hồi từ server: ${response.code()}")
                     btnLogin.isEnabled = true
+
                     if (response.isSuccessful && response.body() != null) {
                         val user = response.body()!!
                         Log.d("LoginActivity", "Đăng nhập thành công cho người dùng: ${user.full_name}")
+
                         com.example.smarttraffic.util.SessionManager(this@LoginActivity).saveLogin(
                             user.id ?: -1,
                             user.full_name ?: "",
                             user.learning_goal ?: "B2"
                         )
+
                         Toast.makeText(this@LoginActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()

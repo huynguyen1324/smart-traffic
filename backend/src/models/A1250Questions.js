@@ -1,3 +1,13 @@
+/**
+ * @file A1250Questions.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của A1250Questions.
+ * @module Backend
+ */
+
+/**
+ * Lớp A1250Questions
+ * Model định nghĩa cấu trúc thực thể dữ liệu của A1250Questions.
+ */
 class A1250Questions {
     constructor(id, type, type_category_id, test_number, image_url, description_text, option_a, option_b, option_c, option_d, correct_option, explanation) {
         this.id = id;

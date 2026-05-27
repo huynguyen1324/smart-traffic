@@ -20,12 +20,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của QuizCategory.
+ */
 class                   QuizCategoryActivity : AppCompatActivity() {
 
     private lateinit var rvCategories: RecyclerView
     private var type: String = "Law"
     private var license: String = "b2"
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_category)
@@ -34,7 +41,6 @@ class                   QuizCategoryActivity : AppCompatActivity() {
         val title = if (type == "Law") "Quiz Luật giao thông" else "Quiz Biển báo đường bộ"
         findViewById<TextView>(R.id.tvTitle).text = title
 
-        // 1. Đọc learning_goal từ máy (đã lưu lúc Login) để xác bảng câu hỏi (a1 hoặc b2)
         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         license = sharedPref.getString("LEARNING_GOAL", "b2")?.lowercase() ?: "b2"
 
@@ -87,7 +93,6 @@ class                   QuizCategoryActivity : AppCompatActivity() {
     }
 
     private fun openQuiz(categoryId: Int, quizType: String, categoryName: String) {
-        // Chuyển sang QuizCategoryListActivity để xem danh sách câu hỏi trước khi học
         val intent = Intent(this, QuizCategoryListActivity::class.java)
         intent.putExtra("license", license)
         intent.putExtra("type", quizType)

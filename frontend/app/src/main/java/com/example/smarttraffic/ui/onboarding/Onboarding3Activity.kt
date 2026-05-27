@@ -8,7 +8,14 @@ import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.auth.LoginActivity
 import com.google.android.material.button.MaterialButton
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Onboarding3.
+ */
 class Onboarding3Activity : AppCompatActivity() {
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding_3)
@@ -22,7 +29,6 @@ class Onboarding3Activity : AppCompatActivity() {
 
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
-        // Xóa sạch back stack để không quay lại được Onboarding
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }

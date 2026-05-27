@@ -1,3 +1,13 @@
+/**
+ * @file B2600Questions.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của B2600Questions.
+ * @module Backend
+ */
+
+/**
+ * Lớp B2600Questions
+ * Model định nghĩa cấu trúc thực thể dữ liệu của B2600Questions.
+ */
 class B2600Questions {
     constructor(id, type, type_category_id, test_number, image_url, description_text, option_a, option_b, option_c, option_d, correct_option, explanation) {
         this.id = id;

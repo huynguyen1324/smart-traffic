@@ -1,5 +1,15 @@
+/**
+ * @file UserStreaksService.js
+ * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến UserStreaks.
+ * @module Backend
+ */
+
 const userStreaksRepository = require('../repositories/UserStreaksRepository');
 
+/**
+ * Lớp UserStreaksService
+ * Service cung cấp các nghiệp vụ logic trung gian liên quan đến UserStreaks.
+ */
 class UserStreaksService {
     async getStreak(userId) {
         let streak = await userStreaksRepository.findByUserId(userId);

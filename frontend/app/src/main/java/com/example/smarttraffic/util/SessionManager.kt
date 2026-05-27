@@ -3,6 +3,9 @@ package com.example.smarttraffic.util
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * Lớp tiện ích (Utility) cung cấp các phương thức dùng chung như SessionManager.
+ */
 class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
@@ -25,10 +28,19 @@ class SessionManager(context: Context) {
     val isLoggedIn: Boolean
         get() = userId != -1
 
+        /**
+     * Thực hiện đăng xuất tài khoản, xóa toàn bộ thông tin phiên làm việc khỏi bộ nhớ.
+     */
     fun logout() {
         prefs.edit().clear().apply()
     }
 
+        /**
+     * Lưu trữ phiên đăng nhập của người dùng vào SharedPreferences cục bộ của thiết bị.
+     * @param id Mã định danh người dùng
+     * @param name Tên đầy đủ hiển thị
+     * @param goal Mục tiêu bằng lái (a1 hoặc b2)
+     */
     fun saveLogin(id: Int, name: String, goal: String) {
         prefs.edit()
             .putInt("USER_ID", id)

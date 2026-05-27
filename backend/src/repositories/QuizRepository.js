@@ -1,5 +1,15 @@
+/**
+ * @file QuizRepository.js
+ * @description Repository thực thi các truy vấn SQL trực tiếp liên quan đến Quiz.
+ * @module Backend
+ */
+
 const pool = require('../config/db');
 
+/**
+ * Lớp QuizRepository
+ * Repository thực thi các truy vấn SQL trực tiếp liên quan đến Quiz.
+ */
 class QuizRepository {
     getQuestionTable(license) {
         const l = (license || "").toLowerCase();

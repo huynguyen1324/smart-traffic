@@ -1,5 +1,15 @@
+/**
+ * @file QuizController.js
+ * @description Controller điều phối yêu cầu HTTP API liên quan đến Quiz.
+ * @module Backend
+ */
+
 const quizService = require('../services/QuizService');
 
+/**
+ * Lớp QuizController
+ * Controller điều phối yêu cầu HTTP API liên quan đến Quiz.
+ */
 class QuizController {
     async getTestList(req, res) {
         try {

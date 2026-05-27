@@ -5,6 +5,9 @@ import com.example.smarttraffic.network.QuizApiService
 import com.example.smarttraffic.network.RetrofitClient
 import retrofit2.Call
 
+/**
+ * Repository trung gian điều phối dữ liệu từ API cục bộ hoặc mạng cho các ViewModel/Activity.
+ */
 class QuizApiRepository {
 
     private val api = RetrofitClient.retrofit.create(QuizApiService::class.java)

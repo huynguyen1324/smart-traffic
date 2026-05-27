@@ -14,10 +14,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của SignDetail.
+ */
 class SignDetailActivity : AppCompatActivity() {
 
     private lateinit var signApi: SignApiService
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_detail)
@@ -37,7 +44,6 @@ class SignDetailActivity : AppCompatActivity() {
         val tvSignMeta = findViewById<TextView>(R.id.tvSignMeta)
         val tvSignDescription = findViewById<TextView>(R.id.tvSignDescription)
 
-        // Load Dữ liệu Sign
         signApi.getSignById(signId).enqueue(object : Callback<SignDto> {
             override fun onResponse(call: Call<SignDto>, response: Response<SignDto>) {
                 if (response.isSuccessful) {

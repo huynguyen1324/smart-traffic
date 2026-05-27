@@ -12,13 +12,19 @@ import androidx.constraintlayout.widget.Guideline
 import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.onboarding.Onboarding1Activity
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Splash.
+ */
 class SplashActivity : AppCompatActivity() {
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Khởi tạo trước Login & Register trong khi loading bar đang chạy
         preWarmScreens()
 
         val tvPercent = findViewById<TextView>(R.id.tvPercent)
@@ -29,7 +35,6 @@ class SplashActivity : AppCompatActivity() {
         startRandomLoading(tvPercent, guideProgress)
     }
 
-    /** Inflate layout Login & Register trên background thread để tránh giật khi chuyển trang */
     private fun preWarmScreens() {
         Thread {
             val inflater = layoutInflater
@@ -62,20 +67,16 @@ class SplashActivity : AppCompatActivity() {
         val runnable = object : Runnable {
             override fun run() {
                 if (currentProgress < 1.0f) {
-                    // Random mức tăng từ 5% đến 15%
                     val increment = (5..15).random() / 100f
                     val nextProgress = (currentProgress + increment).coerceAtMost(1.0f)
                     
-                    // Animate mượt mà từ mức hiện tại lên mức mới
                     val animator = ValueAnimator.ofFloat(currentProgress, nextProgress)
                     animator.duration = (200..500).random().toLong() // Thời gian chạy mỗi đoạn cũng ngẫu nhiên
                     animator.addUpdateListener { animation ->
                         val value = animation.animatedValue as Float
                         
-                        // Cập nhật text phần trăm
                         tvPercent.text = "${(value * 100).toInt()}%"
                         
-                        // Cập nhật Guideline
                         val params = guideProgress.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
                         params.guidePercent = value
                         guideProgress.layoutParams = params
@@ -85,10 +86,8 @@ class SplashActivity : AppCompatActivity() {
                     currentProgress = nextProgress
                     
                     if (currentProgress < 1.0f) {
-                        // Delay ngẫu nhiên trước khi chạy tiếp đoạn mới
                         handler.postDelayed(this, (300..700).random().toLong())
                     } else {
-                        // Khi đạt 100% thì chuyển trang
                         handler.postDelayed({
                             navigateToOnboarding()
                         }, 500)

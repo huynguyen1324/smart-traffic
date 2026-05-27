@@ -28,6 +28,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của SignList.
+ */
 class SignListActivity : AppCompatActivity() {
 
     private lateinit var rvSigns: RecyclerView
@@ -38,6 +41,10 @@ class SignListActivity : AppCompatActivity() {
     private var filteredSigns: List<SignDto> = emptyList()
     private var selectedCategoryId: Int = -1  // -1 = all
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_list)
@@ -53,7 +60,6 @@ class SignListActivity : AppCompatActivity() {
         rvSigns.layoutManager = GridLayoutManager(this, 2)
         rvSigns.adapter = signAdapter
 
-        // Search
         val etSearch = findViewById<EditText>(R.id.etSearch)
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -63,16 +69,13 @@ class SignListActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Load data
         loadCategories()
         loadAllSigns()
 
-        // Navigation
         findViewById<View>(R.id.btnBack).setOnClickListener {
             com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }
 
-        // --- BOTTOM NAVIGATION ---
         com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navSign)
     }
 
@@ -93,7 +96,6 @@ class SignListActivity : AppCompatActivity() {
     private fun buildTabs(categories: List<SignCategoryDto>) {
         tabContainer.removeAllViews()
 
-        // "Tất cả" tab
         addTab("Tất cả", -1, true)
         categories.forEach { cat ->
             addTab(cat.name, cat.id, false)
@@ -106,7 +108,6 @@ class SignListActivity : AppCompatActivity() {
         setTabStyle(tab, isSelected)
 
         tab.setOnClickListener {
-            // Reset all tabs
             for (i in 0 until tabContainer.childCount) {
                 setTabStyle(tabContainer.getChildAt(i) as TextView, false)
             }

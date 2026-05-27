@@ -28,11 +28,18 @@ import com.example.smarttraffic.dto.StreakDto
 import com.example.smarttraffic.dto.QuizStatsDto
 import android.widget.ProgressBar
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Home.
+ */
 class HomeActivity : AppCompatActivity() {
     private lateinit var quizApi: QuizApiService
     private lateinit var userApi: UserApiService
     private var userId: Int = -1
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -40,16 +47,13 @@ class HomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         userId = sharedPref.getInt("USER_ID", -1)
 
-        // Khởi tạo API Services dùng chung
         quizApi = RetrofitClient.retrofit.create(QuizApiService::class.java)
         userApi = RetrofitClient.retrofit.create(UserApiService::class.java)
 
         if (userId != -1) {
             fetchUserInfo(userId)
-            // fetchStreakHome và fetchQuizStatsHome sẽ được gọi trong onResume
         }
 
-        // --- QUICK ACCESS CARDS ---
         findViewById<View>(R.id.cardLesson)?.setOnClickListener {
             startActivity(Intent(this, LawListActivity::class.java))
         }
@@ -69,12 +73,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, AssistantActivity::class.java))
         }
         
-        // --- PROGRESS CARD CLICK ---
         findViewById<View>(R.id.cardProgress)?.setOnClickListener {
             startActivity(Intent(this, ProgressActivity::class.java))
         }
 
-        // --- HEADER ---
         findViewById<View>(R.id.btnProfile)?.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
@@ -83,13 +85,11 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, AssistantActivity::class.java))
         }
 
-        // --- BOTTOM NAVIGATION ---
         NavigationHelper.setupBottomNav(this, R.id.navHome)
     }
 
     override fun onResume() {
         super.onResume()
-        // Làm mới dữ liệu mỗi khi quay lại trang chủ
         if (userId != -1) {
             fetchStreakHome(userId)
             fetchQuizStatsHome(userId)
@@ -102,14 +102,12 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val user = response.body()!!
                     
-                    // Hiển thị tên
                     val tvWelcome = findViewById<TextView>(R.id.tvWelcome)
                     val fullName = user.full_name ?: ""
                     if (fullName.isNotEmpty()) {
                         tvWelcome.text = "${fullName.split(" ").last()}!"
                     }
 
-                    // Hiển thị avatar
                     val ivAvatar = findViewById<ImageView>(R.id.ivAvatar)
                     val avatarUrl = RetrofitClient.getFullImageUrl("images/user_avatars/" + (user.avatar_url ?: "default-male.png"))
                     Glide.with(this@HomeActivity)
@@ -121,7 +119,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<UserDto>, t: Throwable) {
-                // Có thể log lỗi ở đây
             }
         })
     }
@@ -145,7 +142,6 @@ class HomeActivity : AppCompatActivity() {
                     val stats = response.body()!!
                     val totalQuestions = 600
                     
-                    // Tính % hoàn thành thực tế: (số câu đã làm / tổng số câu) * 100
                     val progressPercent = if (totalQuestions > 0) (stats.total_done * 100 / totalQuestions) else 0
                     
                     findViewById<TextView>(R.id.tvProgressPercent)?.text = "Tiến độ học tập: $progressPercent%"

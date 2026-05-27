@@ -1,3 +1,9 @@
+/**
+ * @file db.js
+ * @description Cấu hình kết nối cơ sở dữ liệu và môi trường ứng dụng.
+ * @module Backend
+ */
+
 const mysql = require("mysql2/promise");
 require("dotenv").config();
 

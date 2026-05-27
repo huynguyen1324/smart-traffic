@@ -8,27 +8,31 @@ import com.example.smarttraffic.R
 import com.example.smarttraffic.ui.home.HomeActivity
 import com.example.smarttraffic.util.QuizConstants
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của QuizMenu.
+ */
 class QuizMenuActivity : AppCompatActivity() {
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_menu)
 
-        // 1. Quiz Luật
         findViewById<View>(R.id.cardTopicLaw).setOnClickListener {
             val intent = Intent(this, QuizCategoryActivity::class.java)
             intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_LAW)
             startActivity(intent)
         }
 
-        // 2. Quiz Biển báo
         findViewById<View>(R.id.cardTopicSign).setOnClickListener {
             val intent = Intent(this, QuizCategoryActivity::class.java)
             intent.putExtra(QuizConstants.KEY_TYPE, QuizConstants.TYPE_SIGN)
             startActivity(intent)
         }
 
-        // 3. Quiz tình huống
         findViewById<View>(R.id.cardTopicScenario).setOnClickListener {
             val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
             val license = sharedPref.getString("LEARNING_GOAL", "b2") ?: "b2"
@@ -40,7 +44,6 @@ class QuizMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 4. Điều hướng
         findViewById<View>(R.id.btnBack).setOnClickListener {
             com.example.smarttraffic.util.NavigationHelper.navigateTo(this, com.example.smarttraffic.ui.home.HomeActivity::class.java, true)
         }

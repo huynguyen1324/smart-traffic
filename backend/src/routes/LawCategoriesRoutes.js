@@ -1,3 +1,9 @@
+/**
+ * @file LawCategoriesRoutes.js
+ * @description Định nghĩa các luồng định tuyến (Router) HTTP API cho LawCategories.
+ * @module Backend
+ */
+
 const express = require('express');
 const router = express.Router();
 const lawCategoriesController = require('../controllers/LawCategoriesController');

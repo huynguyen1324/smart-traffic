@@ -1,3 +1,9 @@
+/**
+ * @file UsersRoutes.js
+ * @description Định nghĩa các luồng định tuyến (Router) HTTP API cho Users.
+ * @module Backend
+ */
+
 const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/UsersController');

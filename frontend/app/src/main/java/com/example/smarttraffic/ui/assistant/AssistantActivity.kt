@@ -22,6 +22,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Assistant.
+ */
 class AssistantActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewChat: RecyclerView
@@ -31,7 +34,6 @@ class AssistantActivity : AppCompatActivity() {
     private var currentImageUri: Uri? = null
     private var cameraImageUri: Uri? = null
     
-    // UI elements for Preview
     private lateinit var previewContainer: View
     private lateinit var imgPreview: ImageView
     private lateinit var btnRemoveImage: ImageView
@@ -62,11 +64,14 @@ class AssistantActivity : AppCompatActivity() {
         Glide.with(this).load(uri).into(imgPreview)
     }
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assistant)
 
-        // Init Preview elements
         previewContainer = findViewById(R.id.previewContainer)
         imgPreview = findViewById(R.id.imgPreview)
         btnRemoveImage = findViewById(R.id.btnRemoveImage)
@@ -94,7 +99,6 @@ class AssistantActivity : AppCompatActivity() {
         recyclerViewChat.layoutManager = layoutManager
         recyclerViewChat.adapter = chatAdapter
 
-        // Initial messages
         messages.add(ChatMessage("Xin chào! Tôi là trợ lý AI của bạn. Tôi có thể giúp bạn tra cứu luật, biển báo, luyện thi và tìm địa điểm thi. Bạn muốn bắt đầu từ đâu?", isUser = false))
         messages.add(ChatMessage("", isUser = false, isSuggestion = true, suggestions = listOf(
             "Luật nồng độ cồn mới nhất",
@@ -151,27 +155,29 @@ class AssistantActivity : AppCompatActivity() {
         captureImageLauncher.launch(cameraImageUri)
     }
 
+        /**
+     * Xử lý gửi tin nhắn của người dùng đi kèm ảnh đính kèm (nếu có) lên trợ lý ảo AI.
+     * Đồng thời quản lý lịch sử trò chuyện và cập nhật UI trạng thái "Đang xử lý...".
+     * @param text Nội dung tin nhắn dạng chữ
+     * @param imageUri Địa chỉ Uri dẫn đến file ảnh đính kèm
+     */
     private fun handleSendMessage(text: String, imageUri: Uri? = null) {
         findViewById<MaterialButton>(R.id.btnSend).isEnabled = false
         hideKeyboard() // Hạ bàn phím ngay lập tức
         
-        // Add User Message
         messages.add(ChatMessage(text, isUser = true, imageUri = imageUri))
         chatAdapter.notifyItemInserted(messages.size - 1)
         recyclerViewChat.scrollToPosition(messages.size - 1)
 
-        // Show typing indicator
         messages.add(ChatMessage("Đang xử lý...", isUser = false))
         val typingPosition = messages.size - 1
         chatAdapter.notifyItemInserted(typingPosition)
         recyclerViewChat.scrollToPosition(typingPosition)
 
-        // Prepare request
         val textBody = RequestBody.create(MediaType.parse("text/plain"), text)
         val userId = com.example.smarttraffic.util.SessionManager(this).userId
         val userIdBody = if (userId != -1) RequestBody.create(MediaType.parse("text/plain"), userId.toString()) else null
         
-        // Tạo History (Lấy 5 tin nhắn gần nhất để AI có ngữ cảnh)
         val historyArray = org.json.JSONArray()
         val historyLimit = (messages.size - 2).coerceAtMost(5) // Trừ đi message mới và typing
         val startIndex = (messages.size - 2 - historyLimit).coerceAtLeast(0)
@@ -203,7 +209,6 @@ class AssistantActivity : AppCompatActivity() {
             }
         }
 
-        // Call API
         RetrofitClient.chatbotApi.askChatbot(textBody, userIdBody, historyBody, imagePart).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 messages.removeAt(typingPosition)
@@ -213,7 +218,6 @@ class AssistantActivity : AppCompatActivity() {
                     try {
                         val responseBody = response.body()!!.string()
                         
-                        // Trích xuất JSON an toàn (Đề phòng AI trả về text thừa)
                         val start = responseBody.indexOf("{")
                         val end = responseBody.lastIndexOf("}")
                         val jsonStr = if (start != -1 && end != -1) responseBody.substring(start, end + 1) else responseBody
@@ -228,12 +232,10 @@ class AssistantActivity : AppCompatActivity() {
                         val command = jsonObj.optString("command", null)
                         val params = jsonObj.optJSONObject("params")
 
-                        // Add bot message
                         messages.add(ChatMessage(reply, isUser = false))
                         chatAdapter.notifyItemInserted(messages.size - 1)
                         recyclerViewChat.smoothScrollToPosition(messages.size - 1)
 
-                        // Handle Commands
                         handleAICommand(command, params)
 
                     } catch (e: Exception) {
@@ -252,12 +254,10 @@ class AssistantActivity : AppCompatActivity() {
                     chatAdapter.notifyItemInserted(messages.size - 1)
                 }
                 
-                // Re-enable send button
                 findViewById<MaterialButton>(R.id.btnSend).isEnabled = true
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // Re-enable send button
                 findViewById<MaterialButton>(R.id.btnSend).isEnabled = true
                 
                 messages.removeAt(typingPosition)
@@ -268,12 +268,17 @@ class AssistantActivity : AppCompatActivity() {
         })
     }
 
+        /**
+     * Nhận lệnh từ trợ lý thông minh để thực hiện điều hướng mở chức năng tương ứng của app.
+     * Ví dụ lệnh: OPEN_LAWS, OPEN_SIGNS, OPEN_MAP, SEARCH_LAW,...
+     * @param command Mã lệnh từ AI trả về
+     * @param params Bộ tham số mở rộng như từ khóa tìm kiếm (keyword)
+     */
     private fun handleAICommand(command: String?, params: org.json.JSONObject?) {
         val safeCommand = command?.trim()?.uppercase()
         
         if (safeCommand.isNullOrEmpty() || safeCommand == "NULL") return
 
-        // android.widget.Toast.makeText(this, "Lệnh nhận được: $safeCommand", android.widget.Toast.LENGTH_SHORT).show()
         
 
         when (safeCommand) {

@@ -12,6 +12,9 @@ import com.example.smarttraffic.ui.profile.ProfileActivity
 import com.example.smarttraffic.ui.quiz.QuizMenuActivity
 import com.example.smarttraffic.ui.sign.SignListActivity
 
+/**
+ * Lớp tiện ích (Utility) cung cấp các phương thức dùng chung như NavigationHelper.
+ */
 object NavigationHelper {
 
     fun setupBottomNav(activity: Activity, currentId: Int) {
@@ -51,7 +54,6 @@ object NavigationHelper {
             }
         }
 
-        // Highlight active item
         val activeColor = activity.getColor(R.color.primary)
         when (currentId) {
             R.id.navHome -> setActive(activity, R.id.ivHome, R.id.tvHome, activeColor)

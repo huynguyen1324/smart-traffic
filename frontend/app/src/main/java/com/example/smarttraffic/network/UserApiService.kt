@@ -8,10 +8,22 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ User.
+ */
 data class RegisterResponse(val message: String, val id: Int)
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ User.
+ */
 data class UpdateResponse(val message: String)
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ User.
+ */
 data class LoginRequest(val identifier: String, val password: String)
 
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ User.
+ */
 interface UserApiService {
     @GET("api/users")
     fun getAllUsers(): Call<List<UserDto>>

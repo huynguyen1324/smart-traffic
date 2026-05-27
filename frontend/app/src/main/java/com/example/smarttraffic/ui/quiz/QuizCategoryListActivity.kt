@@ -18,6 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của QuizCategoryList.
+ */
 class QuizCategoryListActivity : AppCompatActivity() {
 
     private lateinit var rvQuestions: RecyclerView
@@ -31,10 +34,13 @@ class QuizCategoryListActivity : AppCompatActivity() {
     private var categoryId: Int = -1
     private var categoryName: String = ""
     
-    // Lưu trữ kết quả (ID câu hỏi -> 0: Sai, 1: Đúng)
     private var resultsMap = mutableMapOf<Int, Int>()
     private var allQuestions = listOf<QuizQuestionDto>()
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_category_list)
@@ -57,7 +63,6 @@ class QuizCategoryListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Mỗi khi quay lại màn hình này, tự động tải lại kết quả từ DB
         syncProgressFromBackend()
     }
 
@@ -108,7 +113,6 @@ class QuizCategoryListActivity : AppCompatActivity() {
                         resultsMap[it.question_id] = it.correct
                     }
                     
-                    // Cập nhật adapter nếu đã tồn tại
                     (rvQuestions.adapter as? QuizQuestionListAdapter)?.updateResults(resultsMap)
                     updateStatistics()
                 }

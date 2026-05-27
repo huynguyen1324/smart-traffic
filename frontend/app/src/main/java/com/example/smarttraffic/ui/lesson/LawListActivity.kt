@@ -15,12 +15,19 @@ import com.example.smarttraffic.network.RetrofitClient
 import com.example.smarttraffic.ui.adapter.LawCategoryAdapter
 import com.example.smarttraffic.util.NavigationHelper
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của LawList.
+ */
 class LawListActivity : AppCompatActivity() {
 
     private lateinit var lawApi: LawApiService
     private lateinit var adapter: LawCategoryAdapter
     private lateinit var rvLessons: RecyclerView
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_law_list)
@@ -33,7 +40,6 @@ class LawListActivity : AppCompatActivity() {
         setupRecyclerView()
         loadCategories()
         
-        // --- BOTTOM NAVIGATION ---
         NavigationHelper.setupBottomNav(this, R.id.navLaw)
     }
 

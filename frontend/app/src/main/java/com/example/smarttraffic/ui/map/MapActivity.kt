@@ -35,6 +35,9 @@ import retrofit2.Response
 import java.text.Normalizer
 import java.util.Locale
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Map.
+ */
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -53,6 +56,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         updateSearchUi("")
     }
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -156,7 +163,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    /** Chuẩn hóa: bỏ dấu + đ→d để gõ không dấu vẫn khớp tên có dấu. */
     private fun normalizeForSearch(s: String): String {
         var t = s.trim().lowercase(Locale.getDefault())
         t = t.replace('đ', 'd')
@@ -232,9 +238,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(if (intent.resolveActivity(packageManager) != null) intent else Intent(Intent.ACTION_VIEW, uri))
     }
 
-    data class Center(val id: Int, val name: String, val pos: LatLng, val addr: String)
+    /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Map.
+ */
+data class Center(val id: Int, val name: String, val pos: LatLng, val addr: String)
 
-    private class MapSearchAdapter(
+    private /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Map.
+ */
+class MapSearchAdapter(
         private val onClick: (Center) -> Unit
     ) : RecyclerView.Adapter<MapSearchAdapter.VH>() {
 
@@ -254,9 +266,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             holder.bind(items[position])
         }
 
-        override fun getItemCount(): Int = items.size
+            /**
+     * Trả về tổng số lượng phần tử có trong danh sách hiển thị.
+     */
+    override fun getItemCount(): Int = items.size
 
-        inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Map.
+ */
+class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
             private val tvName: TextView = itemView.findViewById(R.id.tvSearchName)
             private val tvAddr: TextView = itemView.findViewById(R.id.tvSearchAddress)
 

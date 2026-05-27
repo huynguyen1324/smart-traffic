@@ -18,6 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Test.
+ */
 class TestActivity : AppCompatActivity() {
 
     private var questions: List<QuizQuestionDto> = emptyList()
@@ -44,6 +47,10 @@ class TestActivity : AppCompatActivity() {
     private var countDownTimer: android.os.CountDownTimer? = null
     private val EXAM_TIME_MILLIS: Long = 20 * 60 * 1000 // 20 Phút cho cả A1 và B2
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_detail)
@@ -99,7 +106,6 @@ class TestActivity : AppCompatActivity() {
         }
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            // Optionally auto-save or just wait for Next/Submit
         }
     }
 
@@ -147,11 +153,9 @@ class TestActivity : AppCompatActivity() {
         btnOptionC.text = q.option_c
         btnOptionD.text = q.option_d
 
-        // Check/Uncheck D
         btnOptionC.visibility = if (q.option_c.isNullOrEmpty()) View.GONE else View.VISIBLE
         btnOptionD.visibility = if (q.option_d.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-        // Restore previous answer
         radioGroup.clearCheck()
         val previousAnswer = userAnswers[currentQuestionIndex]
         when (previousAnswer) {
@@ -161,7 +165,6 @@ class TestActivity : AppCompatActivity() {
             "D" -> btnOptionD.isChecked = true
         }
 
-        // Update button text
         btnNext.text = if (currentQuestionIndex == questions.size - 1) "Nộp bài" else "Câu sau"
         btnPrev.alpha = if (currentQuestionIndex == 0) 0.5f else 1.0f
         btnPrev.isEnabled = currentQuestionIndex > 0
@@ -219,7 +222,6 @@ class TestActivity : AppCompatActivity() {
                 val seconds = (millisUntilFinished / 1000) % 60
                 tvTimer.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
 
-                // Cảnh báo khi còn dưới 1 phút (chữ đỏ nhấp nháy hoặc hiệu ứng khác có thể thêm sau)
             }
 
             override fun onFinish() {
@@ -243,7 +245,6 @@ class TestActivity : AppCompatActivity() {
         val unansweredCount = questions.size - userAnswers.size
         val wrongCount = questions.size - correctCount - unansweredCount
 
-        // --- SAVE TO BACKEND ---
         saveToDatabase(correctCount, wrongCount, unansweredCount)
 
         val intent = Intent(this, TestResultActivity::class.java)
@@ -274,14 +275,12 @@ class TestActivity : AppCompatActivity() {
 
         api.saveTestResult(resultDto).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                // Success - Also tick streak
                 api.tickStreak(userId).enqueue(object : Callback<com.example.smarttraffic.dto.StreakDto> {
                     override fun onResponse(call: Call<com.example.smarttraffic.dto.StreakDto>, resp: Response<com.example.smarttraffic.dto.StreakDto>) {}
                     override fun onFailure(call: Call<com.example.smarttraffic.dto.StreakDto>, t: Throwable) {}
                 })
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                // Error - Log or ignore
             }
         })
     }

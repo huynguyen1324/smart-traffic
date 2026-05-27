@@ -20,11 +20,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của TestList.
+ */
 class TestListActivity : AppCompatActivity() {
 
     private lateinit var session: SessionManager
     private lateinit var adapter: TestAdapter
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_list)
@@ -47,7 +54,6 @@ class TestListActivity : AppCompatActivity() {
 
         loadTests()
 
-        // Standardized Bottom Nav
         com.example.smarttraffic.util.NavigationHelper.setupBottomNav(this, R.id.navQuiz)
     }
 
@@ -56,18 +62,15 @@ class TestListActivity : AppCompatActivity() {
         val license = session.learningGoal
         val userId = session.userId
         
-        // Step 1: Get all tests
         api.getTestList(license).enqueue(object : Callback<List<TestDto>> {
             override fun onResponse(call: Call<List<TestDto>>, response: Response<List<TestDto>>) {
                 if (response.isSuccessful) {
                     val tests = response.body() ?: emptyList()
                     
-                    // Step 2: Get user results to mark completed tests
                     api.getTestResultsByUser(userId).enqueue(object : Callback<List<com.example.smarttraffic.dto.TestResultDto>> {
                         override fun onResponse(call: Call<List<com.example.smarttraffic.dto.TestResultDto>>, res: Response<List<com.example.smarttraffic.dto.TestResultDto>>) {
                             if (res.isSuccessful) {
                                 val results = res.body() ?: emptyList()
-                                // Map results to tests (Grouping by test_id to find highest score)
                                 tests.forEach { test ->
                                     val userResult = results.filter { it.test_id == test.id }
                                     if (userResult.isNotEmpty()) {
@@ -95,7 +98,10 @@ class TestListActivity : AppCompatActivity() {
         })
     }
 
-    inner class TestAdapter(private val onClick: (TestDto) -> Unit) : RecyclerView.Adapter<TestAdapter.ViewHolder>() {
+    inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của TestList.
+ */
+class TestAdapter(private val onClick: (TestDto) -> Unit) : RecyclerView.Adapter<TestAdapter.ViewHolder>() {
         private var list: List<TestDto> = emptyList()
 
         fun submitList(newList: List<TestDto>) {
@@ -103,12 +109,23 @@ class TestListActivity : AppCompatActivity() {
             notifyDataSetChanged()
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            /**
+     * Tạo và khởi tạo một ViewHolder mới đại diện cho giao diện phần tử danh sách.
+     * @param parent Nhóm View cha chứa phần tử
+     * @param viewType Kiểu giao diện phần tử
+     * @return ViewHolder mới chứa view
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_test, parent, false)
             return ViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            /**
+     * Kết nối dữ liệu cụ thể từ danh sách vào các thành phần View của ViewHolder tương ứng.
+     * @param holder ViewHolder chứa các ánh xạ view cần cập nhật
+     * @param position Vị trí hiện tại của phần tử dữ liệu
+     */
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val test = list[position]
             holder.tvName.text = "Đề số ${test.id}"
             
@@ -123,7 +140,10 @@ class TestListActivity : AppCompatActivity() {
             holder.itemView.setOnClickListener { onClick(test) }
         }
 
-        override fun getItemCount() = list.size
+            /**
+     * Trả về tổng số lượng phần tử có trong danh sách hiển thị.
+     */
+    override fun getItemCount() = list.size
 
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvName: TextView = view.findViewById(R.id.tvTestName)

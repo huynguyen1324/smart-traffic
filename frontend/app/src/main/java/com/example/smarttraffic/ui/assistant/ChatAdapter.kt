@@ -12,6 +12,9 @@ import android.content.res.ColorStateList
 import com.example.smarttraffic.R
 import com.google.android.material.button.MaterialButton
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của ChatAdapter.
+ */
 class ChatAdapter(
     private val messages: List<ChatMessage>,
     private val onSuggestionClick: (String) -> Unit
@@ -32,6 +35,12 @@ class ChatAdapter(
         }
     }
 
+        /**
+     * Tạo và khởi tạo một ViewHolder mới đại diện cho giao diện phần tử danh sách.
+     * @param parent Nhóm View cha chứa phần tử
+     * @param viewType Kiểu giao diện phần tử
+     * @return ViewHolder mới chứa view
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_USER -> {
@@ -58,9 +67,15 @@ class ChatAdapter(
         }
     }
 
+        /**
+     * Trả về tổng số lượng phần tử có trong danh sách hiển thị.
+     */
     override fun getItemCount(): Int = messages.size
 
-    inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của ChatAdapter.
+ */
+class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvUserMsg: TextView = itemView.findViewById(R.id.tvUserMsg)
         private val imgUserAttachment: android.widget.ImageView = itemView.findViewById(R.id.imgUserAttachment)
         
@@ -83,14 +98,20 @@ class ChatAdapter(
         }
     }
 
-    inner class BotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của ChatAdapter.
+ */
+class BotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvBotMsg: TextView = itemView.findViewById(R.id.tvBotMsg)
         fun bind(message: ChatMessage) {
             tvBotMsg.text = message.text
         }
     }
 
-    inner class SuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của ChatAdapter.
+ */
+class SuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val container: ViewGroup = itemView.findViewById(R.id.suggestionsContainer)
 
         fun bind(message: ChatMessage) {

@@ -21,11 +21,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của LawCategory.
+ */
 class LawCategoryActivity : AppCompatActivity() {
 
     private lateinit var rvLaws: RecyclerView
     private var lawList: List<LawDto> = emptyList()
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_law_category)
@@ -71,7 +78,13 @@ class LawCategoryActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         rvLaws.adapter = object : RecyclerView.Adapter<LawViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LawViewHolder {
+                /**
+     * Tạo và khởi tạo một ViewHolder mới đại diện cho giao diện phần tử danh sách.
+     * @param parent Nhóm View cha chứa phần tử
+     * @param viewType Kiểu giao diện phần tử
+     * @return ViewHolder mới chứa view
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LawViewHolder {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_law, parent, false)
                 return LawViewHolder(view)
             }
@@ -82,7 +95,6 @@ class LawCategoryActivity : AppCompatActivity() {
                 holder.tvTitle.text = law.title ?: "Không có tiêu đề"
                 holder.tvDescription.text = law.description?.take(100) ?: ""
                 
-                // Load Thumbnail
                 if (!law.image_url.isNullOrBlank()) {
                     holder.cardThumb.visibility = View.VISIBLE
                     
@@ -108,11 +120,17 @@ class LawCategoryActivity : AppCompatActivity() {
                 }
             }
 
-            override fun getItemCount() = lawList.size
+                /**
+     * Trả về tổng số lượng phần tử có trong danh sách hiển thị.
+     */
+    override fun getItemCount() = lawList.size
         }
     }
 
-    inner class LawViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner /**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của LawCategory.
+ */
+class LawViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvNumber: TextView = view.findViewById(R.id.tvLawNumber)
         val tvTitle: TextView = view.findViewById(R.id.tvLawTitle)
         val tvDescription: TextView = view.findViewById(R.id.tvLawDescription)

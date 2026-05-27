@@ -1,6 +1,16 @@
+/**
+ * @file QuizService.js
+ * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến Quiz.
+ * @module Backend
+ */
+
 const quizRepository = require('../repositories/QuizRepository');
 const pool = require('../config/db');
 
+/**
+ * Lớp QuizService
+ * Service cung cấp các nghiệp vụ logic trung gian liên quan đến Quiz.
+ */
 class QuizService {
     async getTestList(license) {
         return await quizRepository.findTestList(license);
@@ -28,15 +38,22 @@ class QuizService {
         });
     }
 
+        /**
+     * Tính toán thống kê học tập (số câu đã làm, tỉ lệ chính xác, số câu đúng) của người dùng
+     * @param {number} userId - Mã người dùng
+     * @returns {Promise<Object>} Trả về tổng quan thống kê học tập
+     */
     async getQuizStats(userId) {
         const [userRows] = await pool.query('SELECT learning_goal FROM users WHERE id = ?', [userId]);
         if (!userRows.length) throw new Error("User not found");
         
         const license = (userRows[0].learning_goal || 'a1').toLowerCase();
+                // Lấy thống kê số câu đã làm và số câu trả lời đúng từ repository
         const stats = await quizRepository.findStats(userId, license);
 
         const totalDone = stats.total_done || 0;
         const totalCorrect = stats.total_correct || 0;
+                // Tính tỷ lệ chính xác (đơn vị phần trăm %)
         const accuracyRate = totalDone > 0 ? (totalCorrect / totalDone) * 100 : 0;
         const totalQuestionsCount = license === 'a1' ? 250 : 600;
 

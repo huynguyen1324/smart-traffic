@@ -13,6 +13,9 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ Quiz.
+ */
 interface QuizApiService {
 
     @GET("api/quizzes/{license}/questions/type/{type}")

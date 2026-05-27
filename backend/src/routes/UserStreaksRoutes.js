@@ -1,3 +1,9 @@
+/**
+ * @file UserStreaksRoutes.js
+ * @description Định nghĩa các luồng định tuyến (Router) HTTP API cho UserStreaks.
+ * @module Backend
+ */
+
 const express = require('express');
 const router = express.Router();
 const userStreaksController = require('../controllers/UserStreaksController');

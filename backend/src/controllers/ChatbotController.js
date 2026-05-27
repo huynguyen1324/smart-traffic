@@ -1,3 +1,9 @@
+/**
+ * @file ChatbotController.js
+ * @description Controller điều phối yêu cầu HTTP API liên quan đến Chatbot.
+ * @module Backend
+ */
+
 const OpenAI = require('openai');
 const userStreaksService = require('../services/UserStreaksService');
 const fs = require('fs');
@@ -22,9 +28,19 @@ try {
     systemInstructions = "Bạn là trợ lý App Giao Thông.";
 }
 
+/**
+ * Lớp ChatbotController
+ * Controller điều phối yêu cầu HTTP API liên quan đến Chatbot.
+ */
 class ChatbotController {
+    /**
+ * Hàm ask nhận tin nhắn người dùng và ảnh (nếu có), gọi API OpenAI / OpenRouter để nhận câu trả lời dạng JSON
+ * @param {Object} req - Request chứa body { message, userId, history } và file upload ảnh
+ * @param {Object} res - Response phản hồi về app dưới dạng JSON
+ */
     async ask(req, res) {
         try {
+            // Kiểm tra xem khóa API OpenAI đã được cấu hình thành công hay chưa
             if (!openai) {
                 return res.status(500).json({ error: 'OPENAI_API_KEY chưa được cấu hình.' });
             }
@@ -53,6 +69,7 @@ class ChatbotController {
                 historyArray = typeof history === 'string' ? JSON.parse(history) : (history || []);
             } catch (e) { }
 
+            // Lấy tối đa 5 câu hội thoại trước đó trong lịch sử để giữ ngữ cảnh
             historyArray.slice(-5).forEach(msg => {
                 apiMessages.push({
                     role: msg.isUser ? "user" : "assistant",
@@ -62,6 +79,7 @@ class ChatbotController {
 
             const currentUserContent = [{ type: "text", text: message || "Phân tích nội dung này" }];
 
+            // Nếu người dùng tải kèm ảnh chụp (ví dụ biển báo), mã hóa sang Base64 để gửi cho AI thị giác
             if (req.file) {
                 const base64Image = req.file.buffer.toString("base64");
                 currentUserContent.push({
@@ -74,6 +92,7 @@ class ChatbotController {
 
             apiMessages.push({ role: "user", content: currentUserContent });
 
+            // Gọi API tạo câu trả lời từ AI tích hợp
             const completion = await openai.chat.completions.create({
                 model: modelName,
                 messages: apiMessages,
@@ -83,6 +102,7 @@ class ChatbotController {
             const text = completion.choices[0].message.content;
 
             try {
+                // Phân tích cú pháp chuỗi JSON trả về từ AI để phản hồi chuẩn giao thức
                 const jsonObj = JSON.parse(text);
                 const fallback =
                     "Xin lỗi, tôi chưa tạo được nội dung phản hồi. Bạn hỏi lại hoặc thử một câu ngắn hơn nhé.";

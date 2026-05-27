@@ -1,3 +1,13 @@
+/**
+ * @file DrivingTestCenters.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của DrivingTestCenters.
+ * @module Backend
+ */
+
+/**
+ * Lớp DrivingTestCenters
+ * Model định nghĩa cấu trúc thực thể dữ liệu của DrivingTestCenters.
+ */
 class DrivingTestCenters {
     constructor(id, name, address, latitude, longitude) {
         this.id = id;

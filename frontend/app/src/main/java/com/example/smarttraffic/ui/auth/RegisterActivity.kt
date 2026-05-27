@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,8 +19,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Màn hình giao diện điều khiển (Activity/Fragment) quản lý các luồng tương tác của Register.
+ */
 class RegisterActivity : AppCompatActivity() {
 
+        /**
+     * Khởi tạo màn hình và cài đặt giao diện người dùng (layout, view bindings, sự kiện nhấn).
+     * @param savedInstanceState Bộ lưu trữ trạng thái trước đó của màn hình
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -32,8 +38,7 @@ class RegisterActivity : AppCompatActivity() {
         val edtPhone = findViewById<EditText>(R.id.edtPhone)
         val edtPassword = findViewById<EditText>(R.id.edtPassword)
         val edtConfirm = findViewById<EditText>(R.id.edtConfirm)
-        val rgGender = findViewById<RadioGroup>(R.id.rgGender)
-        
+
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
         findViewById<TextView>(R.id.tvLogin).setOnClickListener { finish() }
 
@@ -43,14 +48,14 @@ class RegisterActivity : AppCompatActivity() {
             val phone = edtPhone.text.toString().trim()
             val password = edtPassword.text.toString().trim()
             val confirm = edtConfirm.text.toString().trim()
-            
+
             val gender = when {
                 findViewById<RadioButton>(R.id.rbMale).isChecked -> "Nam"
                 findViewById<RadioButton>(R.id.rbFemale).isChecked -> "Nữ"
                 else -> "Khác"
             }
             val learningGoal = if (findViewById<RadioButton>(R.id.rbA1).isChecked) "A1" else "B2"
-            
+
             val defaultAvatar = when (gender) {
                 "Nam" -> "default-male.png"
                 "Nữ" -> "default-female.png"
@@ -78,8 +83,8 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Đang đăng ký...", Toast.LENGTH_SHORT).show()
 
             val newUser = UserDto(
-                full_name = name, 
-                email = if (email.isNotEmpty()) email else null, 
+                full_name = name,
+                email = if (email.isNotEmpty()) email else null,
                 phone = if (phone.isNotEmpty()) phone else null,
                 password = password,
                 gender = gender,
@@ -94,7 +99,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val userId = response.body()!!.id
                         Toast.makeText(this@RegisterActivity, "Đăng ký thành công!", Toast.LENGTH_SHORT).show()
-                        
+
                         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
                         sharedPref.edit()
                             .putInt("USER_ID", userId)
@@ -102,8 +107,7 @@ class RegisterActivity : AppCompatActivity() {
                             .putString("USER_AVATAR", defaultAvatar)
                             .putString("LEARNING_GOAL", learningGoal)
                             .apply()
-                        
-                        // Direct navigation to Home screen
+
                         val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -111,6 +115,7 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(this@RegisterActivity, "Tài khoản có thể đã tồn tại", Toast.LENGTH_SHORT).show()
                     }
                 }
+
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                     btnRegister.isEnabled = true
                     Toast.makeText(this@RegisterActivity, "Lỗi mạng: ${t.message}", Toast.LENGTH_SHORT).show()

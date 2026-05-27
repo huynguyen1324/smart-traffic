@@ -1,5 +1,8 @@
 package com.example.smarttraffic.util
 
+/**
+ * Lớp tiện ích (Utility) cung cấp các phương thức dùng chung như QuizConstants.
+ */
 object QuizConstants {
     const val TYPE_LAW = "Law"
     const val TYPE_SIGN = "Sign"

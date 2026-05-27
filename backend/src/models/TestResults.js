@@ -1,3 +1,13 @@
+/**
+ * @file TestResults.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của TestResults.
+ * @module Backend
+ */
+
+/**
+ * Lớp TestResults
+ * Model định nghĩa cấu trúc thực thể dữ liệu của TestResults.
+ */
 class TestResults {
     constructor(data) {
         this.id = data.id;

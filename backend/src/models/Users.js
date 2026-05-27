@@ -1,3 +1,13 @@
+/**
+ * @file Users.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của Users.
+ * @module Backend
+ */
+
+/**
+ * Lớp Users
+ * Model định nghĩa cấu trúc thực thể dữ liệu của Users.
+ */
 class Users {
     constructor(id, full_name, email, phone, password_hash, avatar_url, learning_goal) {
         this.id = id;

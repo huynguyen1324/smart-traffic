@@ -1,3 +1,9 @@
+/**
+ * @file server.js
+ * @description Tập tin khởi chạy chính của ứng dụng Backend Node.js Express server.
+ * @module Backend
+ */
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');

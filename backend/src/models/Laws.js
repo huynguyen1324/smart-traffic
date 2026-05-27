@@ -1,3 +1,13 @@
+/**
+ * @file Laws.js
+ * @description Model định nghĩa cấu trúc thực thể dữ liệu của Laws.
+ * @module Backend
+ */
+
+/**
+ * Lớp Laws
+ * Model định nghĩa cấu trúc thực thể dữ liệu của Laws.
+ */
 class Laws {
     constructor(id, category_id, image_url, title, description, rules, warnings) {
         this.id = id;

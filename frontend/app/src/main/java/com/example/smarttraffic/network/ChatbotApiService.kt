@@ -8,6 +8,9 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
+/**
+ * Định nghĩa các cổng giao tiếp API Retrofit kết nối tới máy chủ Backend cho dịch vụ Chatbot.
+ */
 interface ChatbotApiService {
     @Multipart
     @POST("api/chatbot/ask")
