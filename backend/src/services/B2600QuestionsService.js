@@ -1,68 +1,31 @@
-/**
- * @file B2600QuestionsService.js
- * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến B2600Questions.
- * @module Backend
- */
+// File này quản lý các logic nghiệp vụ cho bộ câu hỏi thi bằng lái B1, B2 (bộ 600 câu lý thuyết siêu dài đây nè).
+// Nó kết nối Controller với Repository tương ứng của bộ 600 câu để xử lý dữ liệu.
 
 const b2600QuestionsRepository = require('../repositories/B2600QuestionsRepository');
 
-/**
- * Lớp B2600QuestionsService
- * Service cung cấp các nghiệp vụ logic trung gian liên quan đến B2600Questions.
- */
+// Lớp dịch vụ để gọi và thao tác với dữ liệu bộ câu hỏi B1/B2
 class B2600QuestionsService {
-        /**
-     * Lấy danh sách tất cả các bản ghi
-     * @returns {Promise<Array>} Danh sách thực thể dữ liệu
-     */
+    // Hàm lấy toàn bộ danh sách 600 câu hỏi ra để ôn tập
     async getAll() {
         return await b2600QuestionsRepository.findAll();
     }
 
-        /**
-     * Tìm bản ghi theo mã định danh (ID)
-     * @param {number|string} id - Mã định danh
-     * @returns {Promise<Object|null>} Thực thể dữ liệu hoặc null
-     */
+    // Hàm lấy thông tin chi tiết của một câu hỏi dựa vào ID của nó
     async getById(id) {
         return await b2600QuestionsRepository.findById(id);
     }
 
-        /**
-     * Tạo mới một thực thể dữ liệu
-     * @param {Object} data - Dữ liệu thực thể
-     * @returns {Promise<number>} ID của bản ghi vừa được tạo
-     */
+    // Hàm thêm mới một câu hỏi vào bộ đề 600 câu
     async create(data) {
         return await b2600QuestionsRepository.save(data);
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Cập nhật nội dung hoặc đáp án của một câu hỏi cụ thể theo ID
     async update(id, data) {
         return await b2600QuestionsRepository.update(id, data);
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Xoá một câu hỏi nào đó bằng ID ra khỏi cơ sở dữ liệu
     async delete(id) {
         return await b2600QuestionsRepository.delete(id);
     }

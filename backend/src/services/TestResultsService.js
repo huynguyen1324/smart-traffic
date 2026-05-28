@@ -1,25 +1,16 @@
-/**
- * @file TestResultsService.js
- * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến TestResults.
- * @module Backend
- */
+// File này lưu trữ và quản lý kết quả các bài thi thử của người dùng.
+// Giúp lưu lại điểm số, trạng thái Đạt hay Không Đạt của các đề thi mà người dùng đã làm.
 
 const testResultsRepository = require('../repositories/TestResultsRepository');
 
-/**
- * Lớp TestResultsService
- * Service cung cấp các nghiệp vụ logic trung gian liên quan đến TestResults.
- */
+// Lớp dịch vụ quản lý kết quả thi thử
 class TestResultsService {
+    // Hàm này giúp lấy toàn bộ danh sách kết quả thi thử của một người dùng dựa vào ID của họ
     async getByUserId(userId) {
         return await testResultsRepository.findByUserId(userId);
     }
 
-        /**
-     * Tạo mới một thực thể dữ liệu
-     * @param {Object} data - Dữ liệu thực thể
-     * @returns {Promise<number>} ID của bản ghi vừa được tạo
-     */
+    // Khi người dùng làm xong bài thi thử, hàm này sẽ được gọi để lưu kết quả bài thi đó vào database
     async create(data) {
         return await testResultsRepository.save(data);
     }

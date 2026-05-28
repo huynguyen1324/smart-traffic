@@ -1,42 +1,34 @@
-/**
- * @file B2600QuestionsController.js
- * @description Controller điều phối yêu cầu HTTP API liên quan đến B2600Questions.
- * @module Backend
- */
+// File này dùng để điều hướng (Controller) các yêu cầu liên quan đến bộ câu hỏi thi bằng lái B2 (gồm 600 câu)
+// Nó nhận các request gửi từ phía client, gọi đến Service tương ứng để xử lý database và trả về thông tin.
 
 const b2600QuestionsService = require('../services/B2600QuestionsService');
 
-/**
- * Lớp B2600QuestionsController
- * Controller điều phối yêu cầu HTTP API liên quan đến B2600Questions.
- */
 class B2600QuestionsController {
-        /**
-     * Lấy toàn bộ danh sách dữ liệu
-     * @param {Object} req - Đối tượng Express Request
-     * @param {Object} res - Đối tượng Express Response
-     * @returns {Promise<void>} Trả về JSON danh sách dữ liệu hoặc thông báo lỗi
-     */
+    // Hàm này giúp lấy toàn bộ danh sách 600 câu hỏi B2
+    // Client gửi request lên, hàm này gọi service lấy toàn bộ dữ liệu và phản hồi lại dạng JSON
     async getAll(req, res) {
         try {
             const data = await b2600QuestionsService.getAll();
-            res.json(data);
-        } catch (err) { res.status(500).json({ error: err.message }); }
+            res.json(data); // Trả về danh sách câu hỏi B2 cho client nè
+        } catch (err) { 
+            // Nếu có gì đó sai sai thì quăng lỗi 500 kèm thông báo lỗi
+            res.status(500).json({ error: err.message }); 
+        }
     }
 
-        /**
-     * Lấy chi tiết bản ghi theo mã định danh (ID)
-     * @param {Object} req - Đối tượng Express Request (yêu cầu params.id)
-     * @param {Object} res - Đối tượng Express Response
-     * @returns {Promise<void>} Trả về JSON bản ghi hoặc lỗi 404/500
-     */
+    // Hàm này giúp tìm kiếm và lấy thông tin chi tiết một câu hỏi B2 theo ID truyền lên
+    // ID được trích xuất từ tham số đường dẫn (req.params.id)
     async getById(req, res) {
         try {
             const data = await b2600QuestionsService.getById(req.params.id);
+            // Nếu tìm mỏi mắt không thấy câu hỏi nào trùng ID thì báo lỗi 404
             if (!data) return res.status(404).json({ message: 'Not found' });
-            res.json(data);
-        } catch (err) { res.status(500).json({ error: err.message }); }
+            res.json(data); // Tìm thấy thì trả về dữ liệu câu hỏi đó ngay
+        } catch (err) { 
+            // Gặp lỗi kết nối database hay lỗi hệ thống thì trả về mã 500
+            res.status(500).json({ error: err.message }); 
+        }
     }
 
 }
-module.exports = new B2600QuestionsController();
+module.exports = new B2600QuestionsController(); // Xuất ra một instance để các file routes có thể import và sử dụng dễ dàng

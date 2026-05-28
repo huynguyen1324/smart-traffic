@@ -1,68 +1,31 @@
-/**
- * @file SignCategoriesService.js
- * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến SignCategories.
- * @module Backend
- */
+// File này quản lý các danh mục của biển báo giao thông nhé.
+// Ví dụ như: nhóm Biển báo cấm, nhóm Biển báo nguy hiểm, nhóm Biển hiệu lệnh... để người dùng dễ tra cứu.
 
 const signCategoriesRepository = require('../repositories/SignCategoriesRepository');
 
-/**
- * Lớp SignCategoriesService
- * Service cung cấp các nghiệp vụ logic trung gian liên quan đến SignCategories.
- */
+// Lớp dịch vụ thao tác với các nhóm biển báo giao thông
 class SignCategoriesService {
-        /**
-     * Lấy danh sách tất cả các bản ghi
-     * @returns {Promise<Array>} Danh sách thực thể dữ liệu
-     */
+    // Hàm lấy danh sách tất cả các nhóm biển báo đang có trong hệ thống
     async getAll() {
         return await signCategoriesRepository.findAll();
     }
 
-        /**
-     * Tìm bản ghi theo mã định danh (ID)
-     * @param {number|string} id - Mã định danh
-     * @returns {Promise<Object|null>} Thực thể dữ liệu hoặc null
-     */
+    // Tìm thông tin chi tiết của một nhóm biển báo dựa vào mã ID của nhóm đó
     async getById(id) {
         return await signCategoriesRepository.findById(id);
     }
 
-        /**
-     * Tạo mới một thực thể dữ liệu
-     * @param {Object} data - Dữ liệu thực thể
-     * @returns {Promise<number>} ID của bản ghi vừa được tạo
-     */
+    // Thêm một nhóm biển báo mới vào hệ thống (ví dụ: nhóm biển báo phụ mới...)
     async create(data) {
         return await signCategoriesRepository.save(data);
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Cập nhật lại thông tin tên gọi hay mô tả của nhóm biển báo theo ID
     async update(id, data) {
         return await signCategoriesRepository.update(id, data);
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Xoá một nhóm biển báo nào đó không cần thiết nữa bằng ID
     async delete(id) {
         return await signCategoriesRepository.delete(id);
     }

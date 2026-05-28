@@ -1,75 +1,47 @@
-/**
- * @file LawCategoriesRepository.js
- * @description Repository thực thi các truy vấn SQL trực tiếp liên quan đến LawCategories.
- * @module Backend
- */
+// File này dùng để quản lý các danh mục luật giao thông (ví dụ: luật cho xe máy, ô tô...)
+// Chúng ta sẽ dùng các câu lệnh SQL cơ bản để thêm, đọc, cập nhật, xoá danh mục nhé!
 
 const pool = require('../config/db');
 const LawCategories = require('../models/LawCategories');
 
-/**
- * Lớp LawCategoriesRepository
- * Repository thực thi các truy vấn SQL trực tiếp liên quan đến LawCategories.
- */
+// Lớp LawCategoriesRepository giúp thao tác với bảng danh mục luật giao thông
 class LawCategoriesRepository {
-        /**
-     * Truy vấn lấy tất cả các dòng từ bảng CSDL tương ứng
-     * @returns {Promise<Array>} Danh sách thô từ CSDL
-     */
+    // Hàm này giúp lấy ra tất cả danh mục luật đang có trong database
     async findAll() {
+        // Thực hiện SELECT tất cả bản ghi từ bảng law_categories
         const [rows] = await pool.query('SELECT * FROM `law_categories`');
         return rows;
     }
 
-        /**
-     * Truy vấn dòng cụ thể trong CSDL dựa trên khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<Object|null>} Bản ghi thô từ CSDL hoặc null
-     */
+    // Hàm này tìm kiếm một danh mục luật cụ thể qua ID của nó
     async findById(id) {
+        // SELECT danh mục có id trùng khớp với tham số truyền vào
         const [rows] = await pool.query('SELECT * FROM `law_categories` WHERE id = ?', [id]);
+        // Nếu tìm thấy thì trả về danh mục đầu tiên, không thấy thì trả về null
         return rows[0] || null;
     }
 
-        /**
-     * Thêm mới dữ liệu một dòng vào bảng CSDL tương ứng
-     * @param {Object} data - Dữ liệu cần lưu
-     * @returns {Promise<number>} ID của bản ghi vừa lưu (insertId)
-     */
+    // Hàm này giúp thêm mới một danh mục luật vào database
     async save(data) {
+        // Thực hiện INSERT dữ liệu mới vào bảng law_categories
         const [result] = await pool.query('INSERT INTO `law_categories` SET ?', [data]);
+        // Trả về ID tự động tăng (insertId) của bản ghi vừa thêm
         return result.insertId;
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Hàm này giúp cập nhật thông tin của một danh mục luật dựa vào ID
     async update(id, data) {
+        // Thực hiện UPDATE dữ liệu cho danh mục có id tương ứng
         const [result] = await pool.query('UPDATE `law_categories` SET ? WHERE id = ?', [data, id]);
+        // Nếu số dòng bị ảnh hưởng lớn hơn 0 thì coi như đã cập nhật thành công (trả về true)
         return result.affectedRows > 0;
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Hàm này dùng để xoá một danh mục luật khỏi database
     async delete(id) {
+        // Thực hiện DELETE danh mục luật theo id truyền vào
         const [result] = await pool.query('DELETE FROM `law_categories` WHERE id = ?', [id]);
+        // Trả về true nếu xoá thành công, false nếu không xoá được gì
         return result.affectedRows > 0;
     }
 }

@@ -1,81 +1,57 @@
-/**
- * @file UsersRepository.js
- * @description Repository thực thi các truy vấn SQL trực tiếp liên quan đến Users.
- * @module Backend
- */
+// File này dùng để quản lý toàn bộ tài khoản người dùng trong hệ thống
+// Hỗ trợ từ việc lấy danh sách, đăng ký (thêm mới), cập nhật thông tin cá nhân cho đến đăng nhập và xoá tài khoản nhé!
 
 const pool = require('../config/db');
 const Users = require('../models/Users');
 
-/**
- * Lớp UsersRepository
- * Repository thực thi các truy vấn SQL trực tiếp liên quan đến Users.
- */
+// Lớp UsersRepository chứa các lệnh SQL để thao tác với bảng users
 class UsersRepository {
-        /**
-     * Truy vấn lấy tất cả các dòng từ bảng CSDL tương ứng
-     * @returns {Promise<Array>} Danh sách thô từ CSDL
-     */
+    // Hàm này giúp lấy ra danh sách của tất cả tài khoản người dùng có trong hệ thống
     async findAll() {
+        // SELECT toàn bộ thông tin từ bảng users
         const [rows] = await pool.query('SELECT * FROM `users`');
         return rows;
     }
 
-        /**
-     * Truy vấn dòng cụ thể trong CSDL dựa trên khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<Object|null>} Bản ghi thô từ CSDL hoặc null
-     */
+    // Hàm này giúp tìm kiếm một người dùng cụ thể bằng ID (ví dụ: khi xem trang cá nhân)
     async findById(id) {
+        // Tìm tài khoản có id khớp với id được truyền vào
         const [rows] = await pool.query('SELECT * FROM `users` WHERE id = ?', [id]);
-        return rows[0] || null;
-    }
-    async findByEmailOrPhone(identifier) {
-        console.log(`Repository seeking user with identifier: "${identifier}"`);
-        const [rows] = await pool.query('SELECT * FROM `users` WHERE email = ? OR phone = ?', [identifier, identifier]);
-        console.log(`Repository found ${rows.length} matches`);
+        // Trả về thông tin user đầu tiên tìm được, nếu không tìm thấy thì trả về null
         return rows[0] || null;
     }
 
-        /**
-     * Thêm mới dữ liệu một dòng vào bảng CSDL tương ứng
-     * @param {Object} data - Dữ liệu cần lưu
-     * @returns {Promise<number>} ID của bản ghi vừa lưu (insertId)
-     */
+    // Hàm này cực kỳ quan trọng cho tính năng Đăng nhập! Giúp tìm user bằng Email hoặc Số điện thoại
+    async findByEmailOrPhone(identifier) {
+        console.log(`Repository seeking user with identifier: "${identifier}"`);
+        // Thực hiện SELECT trong database xem email hoặc số điện thoại có trùng khớp với thông tin đăng nhập không
+        const [rows] = await pool.query('SELECT * FROM `users` WHERE email = ? OR phone = ?', [identifier, identifier]);
+        console.log(`Repository found ${rows.length} matches`);
+        // Nếu tìm thấy tài khoản hợp lệ thì trả về, không thấy thì trả về null
+        return rows[0] || null;
+    }
+
+    // Hàm này dùng khi có người dùng mới Đăng ký tài khoản
     async save(data) {
+        // Thêm dữ liệu tài khoản mới vào bảng users
         const [result] = await pool.query('INSERT INTO `users` SET ?', [data]);
+        // Trả về ID của tài khoản vừa mới được tạo ra
         return result.insertId;
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Hàm này dùng khi người dùng muốn Thay đổi thông tin cá nhân (như đổi tên, đổi mật khẩu...)
     async update(id, data) {
+        // Thực hiện cập nhật dữ liệu của user theo id tương ứng
         const [result] = await pool.query('UPDATE `users` SET ? WHERE id = ?', [data, id]);
+        // Trả về true nếu có ít nhất một dòng trong database được sửa đổi thành công
         return result.affectedRows > 0;
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Hàm này dùng để Xoá tài khoản người dùng khỏi hệ thống
     async delete(id) {
+        // Thực hiện DELETE tài khoản có id trùng khớp
         const [result] = await pool.query('DELETE FROM `users` WHERE id = ?', [id]);
+        // Trả về true nếu xoá thành công, false nếu không tìm thấy user đó để xoá
         return result.affectedRows > 0;
     }
 }

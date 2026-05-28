@@ -1,75 +1,47 @@
-/**
- * @file B2600QuestionsRepository.js
- * @description Repository thực thi các truy vấn SQL trực tiếp liên quan đến B2600Questions.
- * @module Backend
- */
+// File này dùng để tương tác trực tiếp với cơ sở dữ liệu của bảng câu hỏi B2 (bộ 600 câu)
+// Chúng ta sẽ dùng các câu lệnh SQL quen thuộc để lấy, thêm, sửa, xoá dữ liệu nhé!
 
 const pool = require('../config/db');
 const B2600Questions = require('../models/B2600Questions');
 
-/**
- * Lớp B2600QuestionsRepository
- * Repository thực thi các truy vấn SQL trực tiếp liên quan đến B2600Questions.
- */
+// Lớp B2600QuestionsRepository giúp quản lý các câu hỏi thi lái xe B2 bộ 600 câu
 class B2600QuestionsRepository {
-        /**
-     * Truy vấn lấy tất cả các dòng từ bảng CSDL tương ứng
-     * @returns {Promise<Array>} Danh sách thô từ CSDL
-     */
+    // Hàm này giúp lấy ra toàn bộ danh sách câu hỏi B2 từ database
     async findAll() {
+        // Thực hiện câu lệnh SELECT để lấy hết các câu hỏi trong bảng b2_600_questions
         const [rows] = await pool.query('SELECT * FROM `b2_600_questions`');
         return rows;
     }
 
-        /**
-     * Truy vấn dòng cụ thể trong CSDL dựa trên khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<Object|null>} Bản ghi thô từ CSDL hoặc null
-     */
+    // Hàm này giúp tìm kiếm một câu hỏi B2 cụ thể dựa theo ID truyền vào
     async findById(id) {
+        // Tìm câu hỏi có id khớp với id được truyền vào
         const [rows] = await pool.query('SELECT * FROM `b2_600_questions` WHERE id = ?', [id]);
+        // Nếu tìm thấy thì trả về câu hỏi đầu tiên, không thì trả về null cho đỡ lỗi
         return rows[0] || null;
     }
 
-        /**
-     * Thêm mới dữ liệu một dòng vào bảng CSDL tương ứng
-     * @param {Object} data - Dữ liệu cần lưu
-     * @returns {Promise<number>} ID của bản ghi vừa lưu (insertId)
-     */
+    // Hàm này dùng để thêm mới một câu hỏi B2 vào database
     async save(data) {
+        // Thực hiện câu lệnh INSERT dữ liệu mới vào bảng b2_600_questions
         const [result] = await pool.query('INSERT INTO `b2_600_questions` SET ?', [data]);
+        // Trả về ID của bản ghi vừa mới được tạo ra
         return result.insertId;
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Hàm này dùng để cập nhật thông tin của một câu hỏi đã có sẵn thông qua ID
     async update(id, data) {
+        // Dùng lệnh UPDATE để sửa dữ liệu của câu hỏi có id tương ứng
         const [result] = await pool.query('UPDATE `b2_600_questions` SET ? WHERE id = ?', [data, id]);
+        // Trả về true nếu sửa thành công (có dòng trong database bị ảnh hưởng)
         return result.affectedRows > 0;
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Hàm này dùng để xoá một câu hỏi khỏi database dựa vào ID
     async delete(id) {
+        // Dùng lệnh DELETE để xoá câu hỏi có id tương ứng
         const [result] = await pool.query('DELETE FROM `b2_600_questions` WHERE id = ?', [id]);
+        // Trả về true nếu xoá thành công (có dòng bị ảnh hưởng), ngược lại trả về false
         return result.affectedRows > 0;
     }
 }

@@ -1,68 +1,31 @@
-/**
- * @file LawCategoriesService.js
- * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến LawCategories.
- * @module Backend
- */
+// File này quản lý các danh mục luật giao thông (ví dụ như: Lỗi vi phạm chạy quá tốc độ, Lỗi nồng độ cồn...).
+// Giúp gom nhóm các điều luật lại cho người dùng dễ tìm kiếm và tra cứu.
 
 const lawCategoriesRepository = require('../repositories/LawCategoriesRepository');
 
-/**
- * Lớp LawCategoriesService
- * Service cung cấp các nghiệp vụ logic trung gian liên quan đến LawCategories.
- */
+// Lớp dịch vụ để thao tác với các danh mục luật
 class LawCategoriesService {
-        /**
-     * Lấy danh sách tất cả các bản ghi
-     * @returns {Promise<Array>} Danh sách thực thể dữ liệu
-     */
+    // Lấy ra tất cả các danh mục luật đang có trong cơ sở dữ liệu
     async getAll() {
         return await lawCategoriesRepository.findAll();
     }
 
-        /**
-     * Tìm bản ghi theo mã định danh (ID)
-     * @param {number|string} id - Mã định danh
-     * @returns {Promise<Object|null>} Thực thể dữ liệu hoặc null
-     */
+    // Tìm một danh mục luật cụ thể dựa vào mã ID của nó
     async getById(id) {
         return await lawCategoriesRepository.findById(id);
     }
 
-        /**
-     * Tạo mới một thực thể dữ liệu
-     * @param {Object} data - Dữ liệu thực thể
-     * @returns {Promise<number>} ID của bản ghi vừa được tạo
-     */
+    // Tạo thêm một danh mục luật mới (ví dụ khi có nghị định hay quy định mới ban hành)
     async create(data) {
         return await lawCategoriesRepository.save(data);
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Cập nhật lại tên gọi hoặc mô tả của danh mục luật nào đó theo ID
     async update(id, data) {
         return await lawCategoriesRepository.update(id, data);
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Xóa bỏ một danh mục luật không còn dùng tới nữa bằng ID
     async delete(id) {
         return await lawCategoriesRepository.delete(id);
     }

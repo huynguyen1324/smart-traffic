@@ -1,75 +1,47 @@
-/**
- * @file SignCategoriesRepository.js
- * @description Repository thực thi các truy vấn SQL trực tiếp liên quan đến SignCategories.
- * @module Backend
- */
+// File này giúp chúng ta quản lý các loại biển báo giao thông (ví dụ: nhóm biển báo cấm, biển báo nguy hiểm...)
+// Các phương thức ở đây dùng SQL để tương tác trực tiếp với cơ sở dữ liệu nha!
 
 const pool = require('../config/db');
 const SignCategories = require('../models/SignCategories');
 
-/**
- * Lớp SignCategoriesRepository
- * Repository thực thi các truy vấn SQL trực tiếp liên quan đến SignCategories.
- */
+// Lớp SignCategoriesRepository hỗ trợ thao tác dữ liệu với bảng sign_categories
 class SignCategoriesRepository {
-        /**
-     * Truy vấn lấy tất cả các dòng từ bảng CSDL tương ứng
-     * @returns {Promise<Array>} Danh sách thô từ CSDL
-     */
+    // Hàm này giúp lấy ra tất cả danh mục biển báo hiện có trong database
     async findAll() {
+        // Thực hiện SELECT tất cả bản ghi từ bảng sign_categories
         const [rows] = await pool.query('SELECT * FROM `sign_categories`');
         return rows;
     }
 
-        /**
-     * Truy vấn dòng cụ thể trong CSDL dựa trên khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<Object|null>} Bản ghi thô từ CSDL hoặc null
-     */
+    // Hàm này giúp tìm một danh mục biển báo cụ thể dựa vào ID
     async findById(id) {
+        // Tìm danh mục có id khớp với id được truyền vào
         const [rows] = await pool.query('SELECT * FROM `sign_categories` WHERE id = ?', [id]);
+        // Nếu tìm thấy thì trả về danh mục đầu tiên, không thì trả về null cho an tâm
         return rows[0] || null;
     }
 
-        /**
-     * Thêm mới dữ liệu một dòng vào bảng CSDL tương ứng
-     * @param {Object} data - Dữ liệu cần lưu
-     * @returns {Promise<number>} ID của bản ghi vừa lưu (insertId)
-     */
+    // Hàm này dùng để lưu/thêm mới một danh mục biển báo vào database
     async save(data) {
+        // Thực hiện câu lệnh INSERT dữ liệu mới vào bảng sign_categories
         const [result] = await pool.query('INSERT INTO `sign_categories` SET ?', [data]);
+        // Trả về ID tự sinh của danh mục vừa tạo
         return result.insertId;
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Hàm này giúp sửa đổi thông tin của một danh mục biển báo đã có
     async update(id, data) {
+        // Thực hiện UPDATE dữ liệu cho danh mục có id cụ thể
         const [result] = await pool.query('UPDATE `sign_categories` SET ? WHERE id = ?', [data, id]);
+        // Trả về true nếu cập nhật thành công (có dòng dữ liệu thay đổi)
         return result.affectedRows > 0;
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Hàm này giúp xoá một danh mục biển báo ra khỏi hệ thống
     async delete(id) {
+        // Thực hiện DELETE danh mục biển báo theo ID
         const [result] = await pool.query('DELETE FROM `sign_categories` WHERE id = ?', [id]);
+        // Trả về true nếu xoá thành công, false nếu không xoá được dòng nào
         return result.affectedRows > 0;
     }
 }

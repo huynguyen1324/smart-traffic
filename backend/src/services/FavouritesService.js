@@ -1,72 +1,36 @@
-/**
- * @file FavouritesService.js
- * @description Service cung cấp các nghiệp vụ logic trung gian liên quan đến Favourites.
- * @module Backend
- */
+// File này xử lý các logic liên quan đến danh sách yêu thích (favourites) của người dùng.
+// Giúp người dùng lưu lại mấy câu hỏi, luật giao thông hay biển báo mà họ quan tâm để xem lại sau.
 
 const favouritesRepository = require('../repositories/FavouritesRepository');
 
-/**
- * Lớp FavouritesService
- * Service cung cấp các nghiệp vụ logic trung gian liên quan đến Favourites.
- */
+// Lớp dịch vụ quản lý các mục yêu thích
 class FavouritesService {
-        /**
-     * Lấy danh sách tất cả các bản ghi
-     * @returns {Promise<Array>} Danh sách thực thể dữ liệu
-     */
+    // Hàm này lấy ra tất tần tật các bản ghi yêu thích có trong hệ thống luôn
     async getAll() {
         return await favouritesRepository.findAll();
     }
 
-        /**
-     * Tìm bản ghi theo mã định danh (ID)
-     * @param {number|string} id - Mã định danh
-     * @returns {Promise<Object|null>} Thực thể dữ liệu hoặc null
-     */
+    // Tìm một bản ghi yêu thích cụ thể thông qua ID của nó
     async getById(id) {
         return await favouritesRepository.findById(id);
     }
 
+    // Hàm cực kỳ quan trọng: Kiểm tra xem user đã "thả tim" (lưu yêu thích) cái luật/biển báo/câu hỏi này chưa nhé
     async check(userId, type, typeId) {
         return await favouritesRepository.findOne(userId, type, typeId);
     }
 
-        /**
-     * Tạo mới một thực thể dữ liệu
-     * @param {Object} data - Dữ liệu thực thể
-     * @returns {Promise<number>} ID của bản ghi vừa được tạo
-     */
+    // Khi người dùng bấm lưu yêu thích, hàm này sẽ được gọi để tạo một bản ghi mới
     async create(data) {
         return await favouritesRepository.save(data);
     }
 
-        /**
-     * Cập nhật thông tin thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh
-     * @param {Object} data - Dữ liệu cần cập nhật
-     * @returns {Promise<boolean>} Trạng thái thành công
-     */
-        /**
-     * Cập nhật dữ liệu dòng trong CSDL dựa theo ID
-     * @param {number|string} id - Khóa chính
-     * @param {Object} data - Cập nhật tương ứng
-     * @returns {Promise<boolean>} Có dòng nào được cập nhật thành công hay không
-     */
+    // Cập nhật lại thông tin của một bản ghi yêu thích nếu cần thiết
     async update(id, data) {
         return await favouritesRepository.update(id, data);
     }
 
-        /**
-     * Xóa thực thể dữ liệu theo ID
-     * @param {number|string} id - Mã định danh của phần tử cần xóa
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
-        /**
-     * Thực hiện xóa dòng khỏi bảng CSDL dựa vào khóa chính ID
-     * @param {number|string} id - Khóa chính
-     * @returns {Promise<boolean>} Trạng thái xóa thành công
-     */
+    // Người dùng không thích nữa thì bấm bỏ lưu, hàm này sẽ xóa bản ghi yêu thích đó đi theo ID
     async delete(id) {
         return await favouritesRepository.delete(id);
     }

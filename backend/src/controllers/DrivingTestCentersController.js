@@ -1,29 +1,19 @@
-/**
- * @file DrivingTestCentersController.js
- * @description Controller điều phối yêu cầu HTTP API liên quan đến DrivingTestCenters.
- * @module Backend
- */
+// File này làm nhiệm vụ điều phối (Controller) các yêu cầu liên quan đến các trung tâm sát hạch và đào tạo lái xe.
+// Nó sẽ nhận yêu cầu từ client, nhờ Service lấy danh sách trung tâm thi và gửi lại kết quả.
 
 const drivingTestCentersService = require('../services/DrivingTestCentersService');
 
-/**
- * Lớp DrivingTestCentersController
- * Controller điều phối yêu cầu HTTP API liên quan đến DrivingTestCenters.
- */
 class DrivingTestCentersController {
-    /**
- * Lấy toàn bộ danh sách dữ liệu
- * @param {Object} req - Đối tượng Express Request
- * @param {Object} res - Đối tượng Express Response
- * @returns {Promise<void>} Trả về JSON danh sách dữ liệu hoặc thông báo lỗi
- */
+    // Hàm này giúp lấy toàn bộ danh sách các trung tâm thi bằng lái xe trên cả nước
+    // Gọi đến service để đọc dữ liệu từ database rồi trả về danh sách dạng JSON cho frontend hiển thị
     async getAll(req, res) {
         try {
             const data = await drivingTestCentersService.getAllCenters();
-            res.json(data);
+            res.json(data); // Trả về danh sách trung tâm thành công rồi nè!
         } catch (err) {
+            // Có lỗi gì thì quăng mã lỗi 500 kèm lời nhắn lỗi
             res.status(500).json({ error: err.message });
         }
     }
 }
-module.exports = new DrivingTestCentersController();
+module.exports = new DrivingTestCentersController(); // Xuất instance ra để router gọi nhé
